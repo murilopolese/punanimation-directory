@@ -8,10 +8,11 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="./punani-fab.html">
 <link rel="import" href="./punani-filter.html">
+<link rel="import" href="./punani-feed.html">
 
 <dom-module id="punani-app">
     <template>
-        <style>
+        <style is="custom-style">
             :host {
                 --color-white: #FFFFFF;
                 --color-black: #000000;
@@ -54,25 +55,30 @@
                 padding: 0 20px;
                 z-index: 0;
             }
-            #title .logo {
-                width: 130px;
-                margin-bottom: 10px;
-            }
+
             #header-top {
                 height: 160px;
                 width: 100%;
             }
+
             #navigation,
             #social-media {
                 position: absolute;
                 top: 15px;
             }
-            #navigation {
-                left: 20px;
-            }
             #social-media {
                 right: 20px;
             }
+            #navigation {
+                left: 20px;
+            }
+            #navigation .item {
+                font-weight: 600;
+                font-size: 12px;
+                letter-spacing: 0.15em;
+                margin-right: 20px;
+            }
+
             #title {
                 @apply --layout-vertical;
                 @apply --layout-center;
@@ -80,45 +86,59 @@
                 height: 100%;
                 text-align: center;
             }
-            #filters {
-                @apply --layout-horizontal;
-                @apply --layout-justified;
-            }
-            #feed {
-                @apply --layout-horizontal;
-                @apply --layout-center-justified;
-                @apply --layout-wrap;
-                padding-top: 210px;
-            }
-
-            #filters .col {
-                max-width: 300px;
-                width: 100%;
-                padding: 0 10px;
-                margin: 10px 0 15px 0;
-            }
-            #filters .col:first-child,
-            #filters .col:last-child {
-                padding: 0;
-            }
-
-            .placeholder {
-                background: grey;
-                height: 200px;
-                max-width: 100%;
-                margin-bottom: 20px;
-            }
-
-
-
-            #navigation .item {
-                font-weight: 600;
-                font-size: 12px;
-                letter-spacing: 0.15em;
-                margin-right: 20px;
+            #title .logo {
+                width: 130px;
+                margin-bottom: 10px;
             }
             #title .description {
                 letter-spacing: 0.07em;
+            }
+
+            #filters .col {
+                margin: 10px 0 15px 0;
+            }
+
+            #feed {
+                padding-top: 220px;
+            }
+            #feed .image {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+                border: solid 1px var(--color-black);
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+            }
+            #feed .col {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                text-align: center;
+                margin: 10px 0 10px 0;
+            }
+            #feed .name {
+                display: inline-block;
+                margin-top: 6px;
+                font-weight: 900;
+                font-size: 12px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+            }
+            #feed .location {
+                display: inline-block;
+                font-size: 10px;
+                letter-spacing: 0.2em;
+                margin-left: 4px;
+            }
+
+            .row {
+                @apply --layout-horizontal;
+                @apply --layout-justified;
+                @apply --layout-wrap;
+            }
+            .row .col {
+                width: calc(33% - 20px);
+                padding: 0 10px;
             }
 
             .hide-desktop {
@@ -137,17 +157,19 @@
                 #feed {
                     padding-top: 360px;
                 }
-                #filters {
-                    @apply --layout-vertical;
-                }
                 #filters .col {
-                    padding: 0;
-                    width: 100%;
-                    max-width: none;
                     margin: 5px 0;
                 }
                 #filters .col:last-child {
                     margin-bottom: 15px;
+                }
+                .row {
+                    @apply --layout-vertical;
+                }
+                .row .col {
+                    padding: 0;
+                    width: 100%;
+                    max-width: none;
                 }
             }
         </style>
@@ -160,11 +182,17 @@
                             <a class="item" href="#">Join</a>
                         </div>
                         <div class="hide-desktop">
-                            <paper-icon-button icon="menu" on-tap="toggleMenu"></paper-icon-button>
+                            <paper-icon-button
+                                icon="menu"
+                                on-tap="toggleMenu">
+                            </paper-icon-button>
                         </div>
                     </div>
                     <div id="title">
-                        <iron-image class="logo" src="/assets/logo.svg" alt=""></iron-image>
+                        <iron-image
+                            class="logo"
+                            src="/assets/logo.svg" alt="">
+                        </iron-image>
                         <div class="description">
                             A directory of women, trans and non-binary people
                             working with animation and motion graphics.
@@ -174,17 +202,29 @@
                         <div class="hide-mobile">
                             <a href="#">
                                 <punani-fab>
-                                    <iron-image src="/assets/facebook.svg" width="30" alt=""></iron-image>
+                                    <iron-image
+                                        src="/assets/facebook.svg"
+                                        width="30"
+                                        alt="">
+                                    </iron-image>
                                 </punani-fab>
                             </a>
                             <a href="#">
                                 <punani-fab>
-                                    <iron-image src="/assets/vimeo.svg" width="30" alt=""></iron-image>
+                                    <iron-image
+                                        src="/assets/vimeo.svg"
+                                        width="30"
+                                        alt="">
+                                    </iron-image>
                                 </punani-fab>
                             </a>
                             <a href="#">
                                 <punani-fab>
-                                    <iron-image src="/assets/instagram.svg" width="30" alt=""></iron-image>
+                                    <iron-image
+                                        src="/assets/instagram.svg"
+                                        width="30"
+                                        alt="">
+                                    </iron-image>
                                 </punani-fab>
                             </a>
                         </div>
@@ -192,22 +232,48 @@
                 </div>
             </div>
             <div class="container" sticky>
-                <div id="filters">
+                <div id="filters" class="row">
                     <div class="col">
-                        <punani-filter id="locationFilter" is-hidden="{{locationHidden}}" label="Location"></punani-filter>
+                        <punani-filter
+                            id="locationFilter"
+                            is-hidden="{{locationHidden}}"
+                            label="Location">
+                        </punani-filter>
                     </div>
                     <div class="col">
-                        <punani-filter id="skillsFilter" is-hidden="{{skillsHidden}}" label="Skills"></punani-filter>
+                        <punani-filter
+                            id="skillsFilter"
+                            is-hidden="{{skillsHidden}}"
+                            label="Skills">
+                        </punani-filter>
                     </div>
                     <div class="col">
-                        <punani-filter id="softwaresFilter" is-hidden="{{softwaresHidden}}" label="Softwares"></punani-filter>
+                        <punani-filter
+                            id="softwaresFilter"
+                            is-hidden="{{softwaresHidden}}"
+                            label="Softwares">
+                        </punani-filter>
                     </div>
                 </div>
             </div>
         </app-header>
 
         <div id="feed" class="container">
-            <sample-content size="100"></sample-content>
+            <div class="row">
+                <template is="dom-repeat" items="[[punanis]]">
+                    <div class="col">
+                        <a href="#">
+                            <img class="image" src$="[[item.image]]" />
+                            <span class="name">
+                                [[item.name]]
+                            </span>
+                            <span class="location">
+                                ([[item.location.0.label]])
+                            </span>
+                        </a>
+                    </div>
+                </template>
+            </div>
         </div>
 
         <app-drawer id="drawerMenu" align="start">
@@ -220,17 +286,29 @@
             <div>
                 <a href="#">
                     <punani-fab>
-                        <iron-image src="/assets/facebook.svg" width="30" alt=""></iron-image>
+                        <iron-image
+                            src="/assets/facebook.svg"
+                            width="30"
+                            alt="">
+                        </iron-image>
                     </punani-fab>
                 </a>
                 <a href="#">
                     <punani-fab>
-                        <iron-image src="/assets/vimeo.svg" width="30" alt=""></iron-image>
+                        <iron-image
+                            src="/assets/vimeo.svg"
+                            width="30"
+                            alt="">
+                        </iron-image>
                     </punani-fab>
                 </a>
                 <a href="#">
                     <punani-fab>
-                        <iron-image src="/assets/instagram.svg" width="30" alt=""></iron-image>
+                        <iron-image
+                            src="/assets/instagram.svg"
+                            width="30"
+                            alt="">
+                        </iron-image>
                     </punani-fab>
                 </a>
             </div>
@@ -262,6 +340,38 @@
                     value: true,
                     notify: true
                 },
+                punanis: {
+                    type: Array,
+                    value: () => {
+                        let people = [];
+                        for (let i = 0; i < 60; i++) {
+                            people.push(
+                                {
+                                    id: 'id' + i,
+                                    name: 'Bee Grandinetti ' + i,
+                                    image: 'https://www.placehold.it/540x304',
+                                    link: 'https://beegrandinetti.com',
+                                    skills: [
+                                        { name: '2d_animation', label: '2D Animation' },
+                                        { name: 'motion_graphics', label: 'Motion Graphics' }
+                                    ],
+                                    extraSkills: [
+                                        { name: 'teaching', label: 'Teaching' },
+                                        { name: 'mentoring', label: 'Mentoring' }
+                                    ],
+                                    softwares: [
+                                        { name: 'illustrator', label: 'Illustrator' },
+                                        { name: 'photoshop', label: 'Photoshop' }
+                                    ],
+                                    location: [
+                                        { name: 'london', label: 'London, UK' }
+                                    ]
+                                }
+                            );
+                        }
+                        return people;
+                    }
+                }
             };
         }
         connectedCallback() {
