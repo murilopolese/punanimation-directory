@@ -1,0 +1,255 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="punani-filter">
+    <template>
+        <style>
+            :host {
+                --color-white: #FFFFFF;
+                --color-black: #000000;
+                --color-grey: #EDEDED;
+                --color-yellow: #FCC438;
+                display: block;
+            }
+            #punani-filter {
+                position: relative;
+            }
+            #select {
+                position: relative;
+                height: 30px;
+                width: 100%;
+                border: solid 1px var(--color-black);
+                cursor: pointer;
+            }
+            #select .label {
+                line-height: 30px;
+                padding: 0 10px;
+                letter-spacing: 0.07em;
+            }
+            #select .icon {
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                transform: translate(0%, -50%);
+            }
+            #dropdown {
+                position: absolute;
+                bottom: 0;
+                transform: translate(0, 100%);
+                background: var(--color-grey);
+                width: 100%;
+                max-width: 300px;
+                z-index: 20;
+                border: solid 1px var(--color-black);
+            }
+            #dropdown #search {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-justified;
+                height: 40px;
+                width: calc(100% - 15px);
+                padding: 0 5px 5px 10px;
+                border-bottom: solid 1px var(--color-black);
+            }
+            #dropdown #search .icon iron-icon {
+                width: 20px;
+                margin-top: 5px;
+            }
+            #dropdown #search input {
+                display: block;
+                width: calc(100% - 25px);
+                background: none;
+                margin: 0;
+                outline: none;
+                border: none;
+                border-bottom: solid 1px var(--color-black);
+                letter-spacing: 0.07em;
+                padding: 5px 0;
+            }
+            #dropdown #list {
+                height: 200px;
+                overflow-y: scroll;
+            }
+            #dropdown #list .option {
+                padding: 10px;
+                margin: 10px 15px 10px 10px;
+                background: var(--color-white);
+                cursor: pointer;
+            }
+            #dropdown #list .option.iron-selected {
+                background: var(--color-yellow);
+            }
+            #dropdown #list::-webkit-scrollbar {
+                width: 1em;
+                background: none;
+            }
+
+            #dropdown #list::-webkit-scrollbar-track {
+                background: none;
+            }
+
+            #dropdown #list::-webkit-scrollbar-thumb {
+                background: var(--color-yellow);
+                border-radius: 6px;
+            }
+
+            @media (max-width: 768px) {
+                #list {
+                    max-width: none;
+                }
+                #dropdown {
+                    max-width: none;
+                }
+            }
+
+        </style>
+        <div id="punani-filter">
+            <div id="select">
+                <div class="label">
+                    [[label]]
+                </div>
+                <div class="icon">
+                    <iron-icon icon="arrow-drop-down"></iron-icon>
+                </div>
+            </div>
+            <div id="dropdown" hidden$="[[isHidden]]">
+                <div id="search">
+                    <input type="text" value="{{searchValue::input}}">
+                    <div class="icon">
+                        <iron-icon icon="search"></iron-icon>
+                    </div>
+                </div>
+                <div id="list">
+                    <iron-selector
+                        attr-for-selected="name"
+                        on-iron-select="_addSelected"
+                        on-iron-deselect="_removeSelected"
+                        multi>
+                        <template is="dom-repeat" items="[[_options]]">
+                            <div name="[[item.name]]" class="option">
+                                [[item.label]]
+                            </div>
+                        </template>
+                    </iron-selector>
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+    /**
+    * @customElement
+    * @polymer
+    */
+    class PunaniFilter extends Polymer.GestureEventListeners(Polymer.Element) {
+        static get is() { return 'punani-filter'; }
+        static get properties() {
+            return {
+                isHidden: {
+                    type: Boolean,
+                    value: true
+                },
+                label: {
+                    type: String,
+                    value: 'Filter'
+                },
+                searchValue: {
+                    type: String,
+                    value: ''
+                },
+                items: {
+                    type: Array,
+                    value: [
+                        { name:'2d-animation', label: '2D Animation' },
+                        { name:'2d-effects', label: '2D Effects' },
+                        { name:'2d-rigging', label: '2D Rigging' },
+                        { name:'3d-animation', label: '3D Animation' },
+                        { name:'3d-effects', label: '3D Effects' },
+                        { name:'3d-rigging', label: '3D Rigging' },
+                        { name:'3d-modeling', label: '3D Modeling / Texturing' },
+                        { name:'motion-graphics', label: 'Motion Graphics' },
+                        { name:'other-skill-1', label: 'Other Skill' },
+                        { name:'other-skill-2', label: 'Other Skill' },
+                        { name:'other-skill-3', label: 'Other Skill' },
+                        { name:'other-skill-4', label: 'Other Skill' },
+                        { name:'other-skill-5', label: 'Other Skill' }
+                    ]
+                },
+                _options: {
+                    type: Array,
+                    computed: '_filterOptions(searchValue)'
+                },
+                selected: {
+                    type: Array,
+                    value: []
+                }
+            };
+        }
+        connectedCallback() {
+            super.connectedCallback();
+            this.$.select.addEventListener('tap', this._toggleList.bind(this), false);
+            this.$.select.addEventListener('click', this._toggleList.bind(this), false);
+        }
+
+        _toggleList (e) {
+            // console.log('_toggleList', e);
+            this.set('isHidden', !this.isHidden);
+        }
+        _filterOptions (searchValue) {
+            if (searchValue === '') {
+                return this.items;
+            };
+            return this.items.filter((item) => {
+                const lowerLabel = item.label.toLowerCase();
+                const lowerSearch = searchValue.toLowerCase();
+                return lowerLabel.indexOf(lowerSearch) != -1;
+            });
+        }
+        _addSelected (e) {
+            const selectedItem = this.items.find((item) => {
+                return e && e.detail && item && item.name == e.detail.item;
+            });
+            this.push('selected', selectedItem);
+            this.dispatchEvent(
+                new CustomEvent(
+                    'selected',
+                    {
+                        bubbles: false,
+                        detail: {
+                            selectedItem: selectedItem,
+                            selected: this.selected
+                        }
+                    }
+                )
+            );
+        }
+        _removeSelected (e) {
+            const selectedItem = e.detail.item;
+            const removedIndex = this.selected.findIndex((item) => {
+                return selectedItem && item && item.name == selectedItem.name;
+            });
+            const deselectedItem = this.selected[removedIndex];
+            this.splice('selected', removedIndex, 1);
+            this.dispatchEvent(
+                new CustomEvent(
+                    'deselected',
+                    {
+                        bubbles: false,
+                        detail: {
+                            deselectedItem: deselectedItem,
+                            selected: this.selected
+                        }
+                    }
+                )
+            );
+        }
+    }
+
+    window.customElements.define(PunaniFilter.is, PunaniFilter);
+    </script>
+</dom-module>

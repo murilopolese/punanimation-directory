@@ -1,0 +1,7 @@
+{
+  "name": "punanimation-directory",
+  "short_name": "punanimation-directory",
+  "description": "A directory of ladies working with animation and motion graphics.",
+  "start_url": "/",
+  "display": "standalone"
+}

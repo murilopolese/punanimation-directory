@@ -1,0 +1,324 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/demo/sample-content.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="./punani-fab.html">
+<link rel="import" href="./punani-filter.html">
+
+<dom-module id="punani-app">
+    <template>
+        <style>
+            :host {
+                --color-white: #FFFFFF;
+                --color-black: #000000;
+                --color-grey: #EDEDED;
+                --color-yellow: #FCC438;
+                display: block;
+                font-family: 'Open Sans';
+                font-size: 12px;
+            }
+            a:link,
+            a:visited,
+            a:active,
+            a:hover {
+                color: var(--color-black);
+                text-decoration: none;
+            }
+            #drawerMenu {
+                z-index: 30;
+                --app-drawer-content-container: {
+                    box-shadow: 1px 0 2px 1px rgba(0,0,0,0.18);
+                }
+            }
+            app-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background-color: var(--color-grey);
+                color: var(--color-black);
+                z-index: 10;
+            }
+            app-header paper-icon-button {
+                --paper-icon-button-ink-color: var(--color-black);
+            }
+            .container {
+                display: block;
+                position: relative;
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 0 20px;
+                z-index: 0;
+            }
+            #title .logo {
+                width: 130px;
+                margin-bottom: 10px;
+            }
+            #header-top {
+                height: 160px;
+                width: 100%;
+            }
+            #navigation,
+            #social-media {
+                position: absolute;
+                top: 15px;
+            }
+            #navigation {
+                left: 20px;
+            }
+            #social-media {
+                right: 20px;
+            }
+            #title {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                height: 100%;
+                text-align: center;
+            }
+            #filters {
+                @apply --layout-horizontal;
+                @apply --layout-justified;
+            }
+            #feed {
+                @apply --layout-horizontal;
+                @apply --layout-center-justified;
+                @apply --layout-wrap;
+                padding-top: 210px;
+            }
+
+            #filters .col {
+                max-width: 300px;
+                width: 100%;
+                padding: 0 10px;
+                margin: 10px 0 15px 0;
+            }
+            #filters .col:first-child,
+            #filters .col:last-child {
+                padding: 0;
+            }
+
+            .placeholder {
+                background: grey;
+                height: 200px;
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+
+
+
+            #navigation .item {
+                font-weight: 600;
+                font-size: 12px;
+                letter-spacing: 0.15em;
+                margin-right: 20px;
+            }
+            #title .description {
+                letter-spacing: 0.07em;
+            }
+
+            .hide-desktop {
+                display: none;
+            }
+            @media (max-width: 768px) {
+                .hide-mobile {
+                    display: none;
+                }
+                .hide-desktop {
+                    display: inherit;
+                }
+                #header-top {
+                    height: 200px;
+                }
+                #feed {
+                    padding-top: 360px;
+                }
+                #filters {
+                    @apply --layout-vertical;
+                }
+                #filters .col {
+                    padding: 0;
+                    width: 100%;
+                    max-width: none;
+                    margin: 5px 0;
+                }
+                #filters .col:last-child {
+                    margin-bottom: 15px;
+                }
+            }
+        </style>
+        <app-header condenses reveals>
+            <div id="header-top">
+                <div class="container" style="height: 100%;">
+                    <div id="navigation">
+                        <div class="hide-mobile">
+                            <a class="item" href="#">About</a>
+                            <a class="item" href="#">Join</a>
+                        </div>
+                        <div class="hide-desktop">
+                            <paper-icon-button icon="menu" on-tap="toggleMenu"></paper-icon-button>
+                        </div>
+                    </div>
+                    <div id="title">
+                        <iron-image class="logo" src="/assets/logo.svg" alt=""></iron-image>
+                        <div class="description">
+                            A directory of women, trans and non-binary people
+                            working with animation and motion graphics.
+                        </div>
+                    </div>
+                    <div id="social-media">
+                        <div class="hide-mobile">
+                            <a href="#">
+                                <punani-fab>
+                                    <iron-image src="/assets/facebook.svg" width="30" alt=""></iron-image>
+                                </punani-fab>
+                            </a>
+                            <a href="#">
+                                <punani-fab>
+                                    <iron-image src="/assets/vimeo.svg" width="30" alt=""></iron-image>
+                                </punani-fab>
+                            </a>
+                            <a href="#">
+                                <punani-fab>
+                                    <iron-image src="/assets/instagram.svg" width="30" alt=""></iron-image>
+                                </punani-fab>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container" sticky>
+                <div id="filters">
+                    <div class="col">
+                        <punani-filter id="locationFilter" is-hidden="{{locationHidden}}" label="Location"></punani-filter>
+                    </div>
+                    <div class="col">
+                        <punani-filter id="skillsFilter" is-hidden="{{skillsHidden}}" label="Skills"></punani-filter>
+                    </div>
+                    <div class="col">
+                        <punani-filter id="softwaresFilter" is-hidden="{{softwaresHidden}}" label="Softwares"></punani-filter>
+                    </div>
+                </div>
+            </div>
+        </app-header>
+
+        <div id="feed" class="container">
+            <sample-content size="100"></sample-content>
+        </div>
+
+        <app-drawer id="drawerMenu" align="start">
+            <div>
+                <a href="#">About</a>
+            </div>
+            <div>
+                <a href="#">Join</a>
+            </div>
+            <div>
+                <a href="#">
+                    <punani-fab>
+                        <iron-image src="/assets/facebook.svg" width="30" alt=""></iron-image>
+                    </punani-fab>
+                </a>
+                <a href="#">
+                    <punani-fab>
+                        <iron-image src="/assets/vimeo.svg" width="30" alt=""></iron-image>
+                    </punani-fab>
+                </a>
+                <a href="#">
+                    <punani-fab>
+                        <iron-image src="/assets/instagram.svg" width="30" alt=""></iron-image>
+                    </punani-fab>
+                </a>
+            </div>
+        </app-drawer>
+
+    </template>
+
+    <script>
+    /**
+    * @customElement
+    * @polymer
+    */
+    class PunaniApp extends Polymer.GestureEventListeners(Polymer.Element) {
+        static get is() { return 'punani-app'; }
+        static get properties() {
+            return {
+                locationHidden: {
+                    type: Boolean,
+                    value: true,
+                    notify: true
+                },
+                skillsHidden: {
+                    type: Boolean,
+                    value: true,
+                    notify: true
+                },
+                softwaresHidden: {
+                    type: Boolean,
+                    value: true,
+                    notify: true
+                },
+            };
+        }
+        connectedCallback() {
+            super.connectedCallback();
+            this.addEventListener('click', this.hideOptions.bind(this), false);
+            this.addEventListener('tap', this.hideOptions.bind(this), false);
+            window.addEventListener('scroll', this.hideOptions.bind(this), false);
+        }
+        toggleMenu(e) {
+            this.$.drawerMenu.toggle();
+        }
+        hideOptions(e) {
+            if (!e.path) {
+                // Screw you, Safari
+                if (!this.$.locationFilter.isHidden) {
+                    this.$.skillsFilter.set('isHidden', true);
+                    this.$.softwaresFilter.set('isHidden', true);
+                }
+                if (!this.$.skillsFilter.isHidden) {
+                    this.$.locationFilter.set('isHidden', true);
+                    this.$.softwaresFilter.set('isHidden', true);
+                }
+                if (!this.$.softwaresFilter.isHidden) {
+                    this.$.locationFilter.set('isHidden', true);
+                    this.$.skillsFilter.set('isHidden', true);
+                }
+                // if (e.type === 'scroll') {
+                //     this.$.locationFilter.set('isHidden', true);
+                //     this.$.skillsFilter.set('isHidden', true);
+                //     this.$.softwaresFilter.set('isHidden', true);
+                // }
+                return;
+            }
+            const filterElement = e.path.find((el) => {
+                return el && el.tagName && el.tagName.toLowerCase() == 'punani-filter';
+            });
+            if (!filterElement) {
+                this.$.locationFilter.set('isHidden', true);
+                this.$.skillsFilter.set('isHidden', true);
+                this.$.softwaresFilter.set('isHidden', true);
+            } else {
+                if (filterElement.id == 'locationFilter' && !filterElement.isHidden) {
+                    this.$.skillsFilter.set('isHidden', true);
+                    this.$.softwaresFilter.set('isHidden', true);
+                }
+                if (filterElement.id == 'skillsFilter' && !filterElement.isHidden) {
+                    this.$.locationFilter.set('isHidden', true);
+                    this.$.softwaresFilter.set('isHidden', true);
+                }
+                if (filterElement.id == 'softwaresFilter' && !filterElement.isHidden) {
+                    this.$.locationFilter.set('isHidden', true);
+                    this.$.skillsFilter.set('isHidden', true);
+                }
+            }
+        }
+    }
+
+    window.customElements.define(PunaniApp.is, PunaniApp);
+    </script>
+</dom-module>
