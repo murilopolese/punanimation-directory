@@ -25,6 +25,9 @@
                 border: solid 1px var(--color-black);
                 cursor: pointer;
             }
+            #select[active] {
+                border: solid 2px var(--color-yellow);
+            }
             #select .label {
                 line-height: 30px;
                 padding: 0 10px;
@@ -108,7 +111,7 @@
 
         </style>
         <div id="punani-filter">
-            <div id="select">
+            <div id="select" active$="[[_active]]">
                 <div class="label">
                     [[label]]
                 </div>
@@ -154,6 +157,10 @@
                     type: Boolean,
                     value: true
                 },
+                _active: {
+                    type: Boolean,
+                    computed: '_isActive(selected.*)'
+                },
                 label: {
                     type: String,
                     value: 'Filter'
@@ -195,9 +202,7 @@
             this.$.select.addEventListener('tap', this._toggleList.bind(this), false);
             this.$.select.addEventListener('click', this._toggleList.bind(this), false);
         }
-
         _toggleList (e) {
-            // console.log('_toggleList', e);
             this.set('isHidden', !this.isHidden);
         }
         _filterOptions (searchValue) {
@@ -247,6 +252,9 @@
                     }
                 )
             );
+        }
+        _isActive (items) {
+            return items && items.base && items.base.length > 0;
         }
     }
 
