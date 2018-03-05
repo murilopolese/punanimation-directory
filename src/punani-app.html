@@ -4,11 +4,10 @@
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/app-layout/demo/sample-content.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="./punani-fab.html">
 <link rel="import" href="./punani-filter.html">
-<link rel="import" href="./punani-feed.html">
 
 <dom-module id="punani-app">
     <template>
@@ -131,6 +130,34 @@
                 margin-left: 4px;
             }
 
+            .dialog {
+                font-family: 'Open Sans';
+                font-size: 12px;
+                width: 500px;
+                background: var(--color-yellow);
+                box-shadow: var(--shadow-elevation-2dp_-_box-shadow);
+            }
+            .dialog .name {
+                font-size: 16px;
+                font-weight: 800;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+            }
+            .dialog .title {
+                font-size: 14px;
+                font-weight: 800;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+                margin-top: 0.8em;
+                line-height: 0.8em;
+            }
+            .dialog .link {
+                float: right;
+                --punani-fab-size: 25px;
+                --punani-fab-padding: 0px;
+                --punani-fab-ripple-color: var(--color-white);
+            }
+
             .row {
                 @apply --layout-horizontal;
                 @apply --layout-justified;
@@ -170,6 +197,10 @@
                     padding: 0;
                     width: 100%;
                     max-width: none;
+                }
+                .dialog {
+                    width: 100%;
+                    margin: 24px 20px;
                 }
             }
         </style>
@@ -236,6 +267,7 @@
                     <div class="col">
                         <punani-filter
                             id="locationFilter"
+                            items="[[locations]]"
                             is-hidden="{{locationHidden}}"
                             label="Location">
                         </punani-filter>
@@ -243,6 +275,8 @@
                     <div class="col">
                         <punani-filter
                             id="skillsFilter"
+                            items="[[skills]]"
+                            extra-label="Extra Skills"
                             is-hidden="{{skillsHidden}}"
                             label="Skills">
                         </punani-filter>
@@ -250,6 +284,7 @@
                     <div class="col">
                         <punani-filter
                             id="softwaresFilter"
+                            items="[[softwares]]"
                             is-hidden="{{softwaresHidden}}"
                             label="Softwares">
                         </punani-filter>
@@ -262,19 +297,59 @@
             <div class="row">
                 <template is="dom-repeat" items="[[punanis]]">
                     <div class="col">
-                        <a href="#">
+                        <a href="#" on-tap="openDialog">
                             <img class="image" src$="[[item.image]]" />
                             <span class="name">
                                 [[item.name]]
                             </span>
                             <span class="location">
-                                ([[item.location.0.label]])
+                                ([[item.location.label]])
                             </span>
                         </a>
                     </div>
                 </template>
             </div>
         </div>
+
+        <template is="dom-repeat" items="[[punanis]]">
+            <paper-dialog id$="dialog-[[item.id]]" class="dialog" with-backdrop>
+                <div>
+                    <div class="name">
+                        [[item.name]]
+                        <a href$="[[item.link]]" target="_blank">
+                            <punani-fab class="link">
+                                    <iron-image
+                                    src="/assets/link02.svg"
+                                    width="60"
+                                    alt="">
+                                </iron-image>
+                            </punani-fab>
+                        </a>
+                    </div>
+                    <div class="location">
+                        <span>[[item.location.label]]</span>
+                    </div>
+                    <div class="title">SKILLS</div>
+                    <div>
+                        <template is="dom-repeat" items="[[item.skills]]" as="skill">
+                            <span>[[skill.label]]</span><span hidden$="[[_lastItem(index, item.skills)]]">,</span><span hidden$="[[!_lastItem(index, item.skills)]]">.</span>
+                        </template>
+                    </div>
+                    <div class="title">EXTRA SKILLS</div>
+                    <div>
+                        <template is="dom-repeat" items="[[item.skills]]" as="skill">
+                            <span>[[skill.label]]</span><span hidden$="[[_lastItem(index, item.skills)]]">,</span><span hidden$="[[!_lastItem(index, item.skills)]]">.</span>
+                        </template>
+                    </div>
+                    <div class="title">SOFTWARES</div>
+                    <div>
+                        <template is="dom-repeat" items="[[item.softwares]]" as="softwares">
+                            <span>[[softwares.label]]</span><span hidden$="[[_lastItem(index, item.softwares)]]">,</span><span hidden$="[[!_lastItem(index, item.softwares)]]">.</span>
+                        </template>
+                    </div>
+                </div>
+            </paper-dialog>
+        </template>
 
         <app-drawer id="drawerMenu" align="start">
             <div>
@@ -340,6 +415,42 @@
                     value: true,
                     notify: true
                 },
+                locations: {
+                    type: Array,
+                    value: () => {
+                        return [
+                            { name: 'london_uk', label: 'London, UK' },
+                            { name: 'stockholm_se', label: 'Stockholm, SE' }
+                        ];
+                    }
+                },
+                skills: {
+                    type: Array,
+                    value: () => {
+                        return [
+                            { name:'2d-animation', label: '2D Animation' },
+                            { name:'2d-effects', label: '2D Effects' },
+                            { name:'2d-rigging', label: '2D Rigging' },
+                            { name:'3d-animation', label: '3D Animation' },
+                            { name:'3d-effects', label: '3D Effects' },
+                            { name:'3d-rigging', label: '3D Rigging' },
+                            { name:'3d-modeling', label: '3D Modeling / Texturing' },
+                            { name:'motion-graphics', label: 'Motion Graphics' },
+                            { name:'other-skill-1', label: 'Other Skill' },
+                            { name:'teaching', label: 'Teaching / Mentoring', extra: true },
+                            { name:'public-speaking', label: 'Public Speaking', extra: true }
+                        ];
+                    }
+                },
+                softwares: {
+                    type: Array,
+                    value: () => {
+                        return [
+                            { name: 'illustrator', label: 'Illustrator' },
+                            { name: 'photoshop', label: 'Photoshop' }
+                        ];
+                    }
+                },
                 punanis: {
                     type: Array,
                     value: () => {
@@ -349,23 +460,21 @@
                                 {
                                     id: 'id' + i,
                                     name: 'Bee Grandinetti ' + i,
-                                    image: 'https://www.placehold.it/540x304',
+                                    image: 'https://media2.giphy.com/media/xUOwGd2sXd4VwJ0Y48/giphy.gif',
                                     link: 'https://beegrandinetti.com',
                                     skills: [
                                         { name: '2d_animation', label: '2D Animation' },
-                                        { name: 'motion_graphics', label: 'Motion Graphics' }
-                                    ],
-                                    extraSkills: [
-                                        { name: 'teaching', label: 'Teaching' },
-                                        { name: 'mentoring', label: 'Mentoring' }
+                                        { name: 'motion_graphics', label: 'Motion Graphics' },
+                                        { name: 'teaching', label: 'Teaching', extra: true },
+                                        { name: 'mentoring', label: 'Mentoring', extra: true }
                                     ],
                                     softwares: [
                                         { name: 'illustrator', label: 'Illustrator' },
                                         { name: 'photoshop', label: 'Photoshop' }
                                     ],
-                                    location: [
-                                        { name: 'london', label: 'London, UK' }
-                                    ]
+                                    location: {
+                                        name: 'london', label: 'London, UK'
+                                    }
                                 }
                             );
                         }
@@ -426,6 +535,19 @@
                     this.$.skillsFilter.set('isHidden', true);
                 }
             }
+        }
+        openDialog (e) {
+            e.preventDefault();
+            console.log(e);
+            const item = e.model.item;
+            const dialog = Polymer.dom(this.root).querySelector(`#dialog-${item.id}`);
+            if (dialog) {
+                dialog.open();
+            }
+            return false;
+        }
+        _lastItem (index, items) {
+            return items.length-1 === index;
         }
     }
 

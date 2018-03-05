@@ -24,6 +24,9 @@
                 width: 100%;
                 border: solid 1px var(--color-black);
                 cursor: pointer;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
             }
             #select[active] {
                 border: solid 2px var(--color-yellow);
@@ -83,6 +86,9 @@
                 background: var(--color-white);
                 cursor: pointer;
             }
+            #dropdown #list .option.separator {
+                background: none;
+            }
             #dropdown #list .option.iron-selected {
                 background: var(--color-yellow);
             }
@@ -138,6 +144,23 @@
                             </div>
                         </template>
                     </iron-selector>
+                    <template is="dom-if" if="[[_hasExtraSkills]]">
+                        <div class="option separator">
+                            <strong>[[extraLabel]]</strong>
+                        </div>
+                        <iron-selector
+                            attr-for-selected="name"
+                            on-iron-select="_addSelected"
+                            on-iron-deselect="_removeSelected"
+                            multi>
+                            <template is="dom-repeat" items="[[_extraOptions]]">
+                                <div name="[[item.name]]" class="option">
+                                    [[item.label]]
+                                </div>
+                            </template>
+                        </iron-selector>
+
+                    </template>
                 </div>
             </div>
         </div>
@@ -171,29 +194,27 @@
                 },
                 items: {
                     type: Array,
-                    value: [
-                        { name:'2d-animation', label: '2D Animation' },
-                        { name:'2d-effects', label: '2D Effects' },
-                        { name:'2d-rigging', label: '2D Rigging' },
-                        { name:'3d-animation', label: '3D Animation' },
-                        { name:'3d-effects', label: '3D Effects' },
-                        { name:'3d-rigging', label: '3D Rigging' },
-                        { name:'3d-modeling', label: '3D Modeling / Texturing' },
-                        { name:'motion-graphics', label: 'Motion Graphics' },
-                        { name:'other-skill-1', label: 'Other Skill' },
-                        { name:'other-skill-2', label: 'Other Skill' },
-                        { name:'other-skill-3', label: 'Other Skill' },
-                        { name:'other-skill-4', label: 'Other Skill' },
-                        { name:'other-skill-5', label: 'Other Skill' }
-                    ]
+                    value: () => { return []; }
+                },
+                extraLabel: {
+                    type: String,
+                    value: 'Extra'
                 },
                 _options: {
                     type: Array,
-                    computed: '_filterOptions(searchValue)'
+                    computed: '_filterSkills(searchValue)'
+                },
+                _extraOptions: {
+                    type: Array,
+                    computed: '_filterExtraSkills(searchValue)'
+                },
+                _hasExtraSkills: {
+                    type: Boolean,
+                    computed: '_computeHasExtraOptions(_extraOptions.*)'
                 },
                 selected: {
                     type: Array,
-                    value: []
+                    value: () => { return []; }
                 }
             };
         }
@@ -205,19 +226,40 @@
         _toggleList (e) {
             this.set('isHidden', !this.isHidden);
         }
-        _filterOptions (searchValue) {
+        _filterSkills (searchValue) {
+            const skills = this.items.filter((item) => {
+                // not extra skill
+                return !item.extra;
+            });
             if (searchValue === '') {
-                return this.items;
+                return skills;
             };
-            return this.items.filter((item) => {
+            return skills.filter((item) => {
                 const lowerLabel = item.label.toLowerCase();
                 const lowerSearch = searchValue.toLowerCase();
                 return lowerLabel.indexOf(lowerSearch) != -1;
             });
         }
+        _filterExtraSkills (searchValue) {
+            const skills = this.items.filter((item) => {
+                // extra skill
+                return item.extra === true;
+            });
+            if (searchValue === '') {
+                return skills;
+            };
+            return skills.filter((item) => {
+                const lowerLabel = item.label.toLowerCase();
+                const lowerSearch = searchValue.toLowerCase();
+                return lowerLabel.indexOf(lowerSearch) != -1;
+            });
+        }
+        _computeHasExtraOptions (skills) {
+            return skills && skills.base && skills.base.length > 0;
+        }
         _addSelected (e) {
             const selectedItem = this.items.find((item) => {
-                return e && e.detail && item && item.name == e.detail.item;
+                return e && e.detail && item && item.name == e.detail.item.name;
             });
             this.push('selected', selectedItem);
             this.dispatchEvent(
