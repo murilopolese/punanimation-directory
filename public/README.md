@@ -33,7 +33,6 @@ $ polymer test
 Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
 
 ## TODO:
-- keystone setup
 - keystone rest
     - https://github.com/d-pac/restful-keystone
     - https://github.com/danielpquinn/keystone-rest
@@ -47,3 +46,6 @@ Your application is already set up to be tested via [web-component-tester](https
 - link join to form
 - social media links
 - review sizes, margins, etc
+
+## DONE:
+- keystone setup
