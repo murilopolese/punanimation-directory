@@ -538,7 +538,6 @@
         }
         openDialog (e) {
             e.preventDefault();
-            console.log(e);
             const item = e.model.item;
             const dialog = Polymer.dom(this.root).querySelector(`#dialog-${item.id}`);
             if (dialog) {
