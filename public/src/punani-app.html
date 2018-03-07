@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/app-layout/demo/sample-content.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -101,9 +102,9 @@
                 padding-top: 220px;
             }
             #feed .image {
-                width: 100%;
-                height: auto;
+                width: 540px;
                 max-width: 100%;
+                min-height: 200px;
                 border: solid 1px var(--color-black);
                 box-sizing: border-box;
                 -moz-box-sizing: border-box;
@@ -114,6 +115,7 @@
                 @apply --layout-center;
                 text-align: center;
                 margin: 10px 0 10px 0;
+                cursor: pointer;
             }
             #feed .name {
                 display: inline-block;
@@ -269,7 +271,8 @@
                             id="locationFilter"
                             items="[[locations]]"
                             is-hidden="{{locationHidden}}"
-                            label="Location">
+                            label="Location"
+                            on-selection-changed="locationChanged">
                         </punani-filter>
                     </div>
                     <div class="col">
@@ -278,7 +281,8 @@
                             items="[[skills]]"
                             extra-label="Extra Skills"
                             is-hidden="{{skillsHidden}}"
-                            label="Skills">
+                            label="Skills"
+                            on-selection-changed="skillsChanged">
                         </punani-filter>
                     </div>
                     <div class="col">
@@ -286,7 +290,8 @@
                             id="softwaresFilter"
                             items="[[softwares]]"
                             is-hidden="{{softwaresHidden}}"
-                            label="Softwares">
+                            label="Softwares"
+                            on-selection-changed="softwaresChanged">
                         </punani-filter>
                     </div>
                 </div>
@@ -294,57 +299,69 @@
         </app-header>
 
         <div id="feed" class="container">
-            <div class="row">
-                <template is="dom-repeat" items="[[punanis]]">
-                    <div class="col">
-                        <a href="#" on-tap="openDialog">
-                            <img class="image" src$="[[item.image]]" />
-                            <span class="name">
-                                [[item.name]]
-                            </span>
-                            <span class="location">
-                                ([[item.location.label]])
-                            </span>
-                        </a>
-                    </div>
-                </template>
-            </div>
+            <iron-scroll-threshold id="ironScrollTheshold" on-lower-threshold="loadMoreData" scroll-target="document">
+                <div class="row">
+                    <template is="dom-repeat"
+                        items="[[paginatedPunanis]]"
+                        restamp
+                        >
+                        <div class="col" id="col-[[index]]" on-tap="openDialog">
+                            <iron-image
+                                class="image"
+                                sizing="cover"
+                                src="[[item.coverImage]]"
+                                alt="[[item.name]]">
+                            </iron-image>
+                            <a>
+                                <span class="name">
+                                    [[item.name]]
+                                </span>
+                                <span class="location">
+                                    ([[item.location.city]], [[item.location.country]])
+                                </span>
+                            </a>
+                        </div>
+                    </template>
+                </div>
+            </iron-scroll-threshold>
         </div>
 
-        <template is="dom-repeat" items="[[punanis]]">
-            <paper-dialog id$="dialog-[[item.id]]" class="dialog" with-backdrop>
+        <template is="dom-repeat" items="[[punanis]]" restamp restampKey="_id">
+            <paper-dialog id$="dialog-[[item._id]]" class="dialog" with-backdrop>
                 <div>
                     <div class="name">
                         [[item.name]]
-                        <a href$="[[item.link]]" target="_blank">
-                            <punani-fab class="link">
+                        <template is="dom-if" if="[[item.website]]">
+                            <a href$="[[!!item.website]]" target="_blank">
+                                <punani-fab class="link">
                                     <iron-image
-                                    src="/assets/link02.svg"
-                                    width="60"
-                                    alt="">
-                                </iron-image>
-                            </punani-fab>
-                        </a>
+                                        src="/assets/link02.svg"
+                                        width="60"
+                                        alt="">
+                                    </iron-image>
+                                </punani-fab>
+                            </a>
+                        </template>
                     </div>
                     <div class="location">
-                        <span>[[item.location.label]]</span>
+                        <span>[[item.location.city]], [[item.location.country]]</span>
                     </div>
                     <div class="title">SKILLS</div>
                     <div>
-                        <template is="dom-repeat" items="[[item.skills]]" as="skill">
-                            <span>[[skill.label]]</span><span hidden$="[[_lastItem(index, item.skills)]]">,</span><span hidden$="[[!_lastItem(index, item.skills)]]">.</span>
+                        <template is="dom-repeat" items="[[filterSkills(item.skills, 0)]]" as="skill">
+                            <span>[[skill.name]]</span><span hidden$="[[lastSkill(index, item.skills, 0)]]">,</span><span hidden$="[[!lastSkill(index, item.skills, 0)]]">.</span>
                         </template>
                     </div>
                     <div class="title">EXTRA SKILLS</div>
                     <div>
-                        <template is="dom-repeat" items="[[item.skills]]" as="skill">
-                            <span>[[skill.label]]</span><span hidden$="[[_lastItem(index, item.skills)]]">,</span><span hidden$="[[!_lastItem(index, item.skills)]]">.</span>
+                        <template is="dom-repeat" items="[[filterSkills(item.skills, 1)]]" as="skill">
+                            <span>[[skill.name]]</span><span hidden$="[[lastSkill(index, item.skills, 1)]]">,</span><span hidden$="[[!lastSkill(index, item.skills, 1)]]">.</span>
                         </template>
                     </div>
                     <div class="title">SOFTWARES</div>
                     <div>
                         <template is="dom-repeat" items="[[item.softwares]]" as="softwares">
-                            <span>[[softwares.label]]</span><span hidden$="[[_lastItem(index, item.softwares)]]">,</span><span hidden$="[[!_lastItem(index, item.softwares)]]">.</span>
+                            <span>[[softwares.name]]</span><span hidden$="[[lastItem(index, item.softwares)]]">,</span><span hidden$="[[!lastItem(index, item.softwares)]]">.</span>
                         </template>
                     </div>
                 </div>
@@ -417,77 +434,113 @@
                 },
                 locations: {
                     type: Array,
-                    value: () => {
-                        return [
-                            { name: 'london_uk', label: 'London, UK' },
-                            { name: 'stockholm_se', label: 'Stockholm, SE' }
-                        ];
-                    }
+                    value: () => { return []; }
                 },
                 skills: {
                     type: Array,
-                    value: () => {
-                        return [
-                            { name:'2d-animation', label: '2D Animation' },
-                            { name:'2d-effects', label: '2D Effects' },
-                            { name:'2d-rigging', label: '2D Rigging' },
-                            { name:'3d-animation', label: '3D Animation' },
-                            { name:'3d-effects', label: '3D Effects' },
-                            { name:'3d-rigging', label: '3D Rigging' },
-                            { name:'3d-modeling', label: '3D Modeling / Texturing' },
-                            { name:'motion-graphics', label: 'Motion Graphics' },
-                            { name:'other-skill-1', label: 'Other Skill' },
-                            { name:'teaching', label: 'Teaching / Mentoring', extra: true },
-                            { name:'public-speaking', label: 'Public Speaking', extra: true }
-                        ];
-                    }
+                    value: () => { return []; }
                 },
                 softwares: {
                     type: Array,
-                    value: () => {
-                        return [
-                            { name: 'illustrator', label: 'Illustrator' },
-                            { name: 'photoshop', label: 'Photoshop' }
-                        ];
-                    }
+                    value: () => { return []; }
                 },
                 punanis: {
                     type: Array,
-                    value: () => {
-                        let people = [];
-                        for (let i = 0; i < 60; i++) {
-                            people.push(
-                                {
-                                    id: 'id' + i,
-                                    name: 'Bee Grandinetti ' + i,
-                                    image: 'https://media2.giphy.com/media/xUOwGd2sXd4VwJ0Y48/giphy.gif',
-                                    link: 'https://beegrandinetti.com',
-                                    skills: [
-                                        { name: '2d_animation', label: '2D Animation' },
-                                        { name: 'motion_graphics', label: 'Motion Graphics' },
-                                        { name: 'teaching', label: 'Teaching', extra: true },
-                                        { name: 'mentoring', label: 'Mentoring', extra: true }
-                                    ],
-                                    softwares: [
-                                        { name: 'illustrator', label: 'Illustrator' },
-                                        { name: 'photoshop', label: 'Photoshop' }
-                                    ],
-                                    location: {
-                                        name: 'london', label: 'London, UK'
-                                    }
-                                }
-                            );
-                        }
-                        return people;
-                    }
+                    value: () => { return []; }
+                },
+                filteredPunanis: {
+                    type: Array,
+                    computed: 'filterPunanis(punanis.*, locationFilter.*, skillsFilter.*, softwaresFilter.*)'
+                },
+                locationFilter: {
+                    type: Array,
+                    value: () => { return []; }
+                },
+                skillsFilter: {
+                    type: Array,
+                    value: () => { return []; }
+                },
+                softwaresFilter: {
+                    type: Array,
+                    value: () => { return []; }
+                },
+                currentPage: {
+                    type: Number,
+                    value: 0
+                },
+                pageSize: {
+                    type: Number,
+                    value: 12
+                },
+                paginatedPunanis: {
+                    type: Array,
+                    computed: 'computePaginatedPunanis(filteredPunanis.*, currentPage)'
                 }
             };
         }
+        static get observers() {
+            return []
+        }
         connectedCallback() {
             super.connectedCallback();
-            this.addEventListener('click', this.hideOptions.bind(this), false);
-            this.addEventListener('tap', this.hideOptions.bind(this), false);
-            window.addEventListener('scroll', this.hideOptions.bind(this), false);
+            window.addEventListener('click', this.hideOptions.bind(this), false);
+            window.addEventListener('tap', this.hideOptions.bind(this), false);
+            // window.addEventListener('scroll', this.hideOptions.bind(this), false);
+
+            fetch('/api/locations')
+                .then(r => r.json())
+                .then((response) => {
+                    if (response.locations) {
+                        let locations = response.locations.map((location) => {
+                            return {
+                                id: location._id,
+                                name: `${location.city}, ${location.country}`,
+                                country: location.country,
+                                city: location.city
+                            };
+                        });
+                        locations = locations.sort((a, b) => {
+                            if (a.city < b.city) return -1;
+                            if (a.city > b.city) return 1;
+                            return 0;
+                        });
+                        this.set('locations', locations);
+                    }
+                });
+            fetch('/api/skills')
+                .then(r => r.json())
+                .then((response) => {
+                    if (response.skills) {
+                        const skills = response.skills.map((skill) => {
+                            return {
+                                id: skill._id,
+                                name: `${skill.name}`,
+                                extra: `${skill.extra}`
+                            };
+                        });
+                        this.set('skills', skills);
+                    }
+                });
+            fetch('/api/softwares')
+                .then(r => r.json())
+                .then((response) => {
+                    if (response.softwares) {
+                        const softwares = response.softwares.map((skill) => {
+                            return {
+                                id: skill._id,
+                                name: `${skill.name}`
+                            };
+                        });
+                        this.set('softwares', softwares);
+                    }
+                });
+            fetch('/api/entries')
+                .then(r => r.json())
+                .then((response) => {
+                    if (response.entries) {
+                        this.set('punanis', response.entries);
+                    }
+                });
         }
         toggleMenu(e) {
             this.$.drawerMenu.toggle();
@@ -507,11 +560,6 @@
                     this.$.locationFilter.set('isHidden', true);
                     this.$.skillsFilter.set('isHidden', true);
                 }
-                // if (e.type === 'scroll') {
-                //     this.$.locationFilter.set('isHidden', true);
-                //     this.$.skillsFilter.set('isHidden', true);
-                //     this.$.softwaresFilter.set('isHidden', true);
-                // }
                 return;
             }
             const filterElement = e.path.find((el) => {
@@ -538,15 +586,86 @@
         }
         openDialog (e) {
             e.preventDefault();
+            e.stopPropagation();
             const item = e.model.item;
-            const dialog = Polymer.dom(this.root).querySelector(`#dialog-${item.id}`);
+            const dialog = Polymer.dom(this.root).querySelector(`#dialog-${item._id}`);
             if (dialog) {
                 dialog.open();
             }
             return false;
         }
-        _lastItem (index, items) {
-            return items.length-1 === index;
+        lastItem (index, items) {
+            return items.length-1 == index;
+        }
+        lastSkill(index, items, extra) {
+            const skills = this.filterSkills(items, extra);
+            return skills.length-1 == index;
+        }
+        /**
+        * Filter skills array searching for elements that where the property
+        * `extra` matches the argument `extra`.
+        * @param {Array} skills Array of skills
+        * @param {Boolean} extra Whether filter only extra skills only
+        * @return {Array} Array of skills that matches its `extra` property with
+        *     the argument `extra`.
+        */
+        filterSkills (skills, extra) {
+            if (skills) {
+                return skills.filter((skill) => {
+                    return skill.extra == extra;
+                });
+            }
+        }
+        locationChanged (e) {
+            console.log('locationChanged', e.detail);
+            this.set('locationFilter', e.detail.selected.slice(0));
+        }
+        skillsChanged (e) {
+            this.set('skillsFilter', e.detail.selected.slice(0));
+        }
+        softwaresChanged (e) {
+            this.set('softwaresFilter', e.detail.selected.slice(0));
+        }
+        filterPunanis (punanis, locationFilter, skillsFilter, softwaresFilter) {
+            if (
+                !locationFilter || !locationFilter.base
+                || !skillsFilter || !skillsFilter.base
+                || !softwaresFilter || !softwaresFilter.base
+                || !punanis || !punanis.base
+            ) {
+                return;
+            }
+            // Changing any filter, reset pagination and scroll to top
+            this.set('currentPage', 0);
+            return punanis.base.filter((punani) => {
+                // The check for "in" something is either has no filter or has
+                // a matching property with the selected filters
+                const inLocation = locationFilter.base.length == 0 || locationFilter.base.find((filter) => {
+                    return filter.id == punani.location._id;
+                });
+                const inSkills = skillsFilter.base.length == 0 || punani.skills.find((punaniSkill) => {
+                    return skillsFilter.base.find((skill) => {
+                        return punaniSkill._id == skill.id;
+                    });
+                });
+                const inSoftwares = softwaresFilter.base.length == 0 || punani.softwares.find((punaniSoftwares) => {
+                    return softwaresFilter.base.find((softwares) => {
+                        return punaniSoftwares._id == softwares.id;
+                    });
+                });
+                return inLocation && inSkills && inSoftwares;
+            });
+        }
+        loadMoreData () {
+            this.set('currentPage', this.currentPage+1);
+            this.$.ironScrollTheshold.clearTriggers();
+        }
+        computePaginatedPunanis (filteredPunanis, currentPage) {
+            const lastIndex = currentPage > 0 ? currentPage * this.pageSize: this.pageSize;
+            if (lastIndex > filteredPunanis.base.lenth) {
+                return filteredPunanis.base;
+            }
+            return filteredPunanis.base.slice(0, lastIndex);
         }
     }
 

@@ -229,7 +229,7 @@ var countries = [
   { label: 'Uganda', value: 'UG' },
   { label: 'Ukraine', value: 'UA' },
   { label: 'United Arab Emirates', value: 'AE' },
-  { label: 'United Kingdom', value: 'GB' },
+  { label: 'United Kingdom', value: 'UK' },
   { label: 'United States', value: 'US' },
   { label: 'United States Minor Outlying Islands', value: 'UM' },
   { label: 'Uruguay', value: 'UY' },

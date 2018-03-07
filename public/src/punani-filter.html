@@ -51,6 +51,10 @@
                 max-width: 300px;
                 z-index: 20;
                 border: solid 1px var(--color-black);
+                cursor: pointer;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
             }
             #dropdown #search {
                 @apply --layout-horizontal;
@@ -117,7 +121,7 @@
 
         </style>
         <div id="punani-filter">
-            <div id="select" active$="[[_active]]">
+            <div id="select" active$="[[_active]]" on-tap="_toggleList">
                 <div class="label">
                     [[label]]
                 </div>
@@ -134,13 +138,13 @@
                 </div>
                 <div id="list">
                     <iron-selector
-                        attr-for-selected="name"
+                        attr-for-selected="id"
                         on-iron-select="_addSelected"
                         on-iron-deselect="_removeSelected"
                         multi>
                         <template is="dom-repeat" items="[[_options]]">
-                            <div name="[[item.name]]" class="option">
-                                [[item.label]]
+                            <div id$="[[item.id]]" class="option">
+                                [[item.name]]
                             </div>
                         </template>
                     </iron-selector>
@@ -149,13 +153,13 @@
                             <strong>[[extraLabel]]</strong>
                         </div>
                         <iron-selector
-                            attr-for-selected="name"
+                            attr-for-selected="id"
                             on-iron-select="_addSelected"
                             on-iron-deselect="_removeSelected"
                             multi>
                             <template is="dom-repeat" items="[[_extraOptions]]">
-                                <div name="[[item.name]]" class="option">
-                                    [[item.label]]
+                                <div id$="[[item.id]]" class="option">
+                                    [[item.name]]
                                 </div>
                             </template>
                         </iron-selector>
@@ -202,11 +206,11 @@
                 },
                 _options: {
                     type: Array,
-                    computed: '_filterSkills(searchValue)'
+                    computed: '_filterOptions(searchValue, items.*)'
                 },
                 _extraOptions: {
                     type: Array,
-                    computed: '_filterExtraSkills(searchValue)'
+                    computed: '_filterExtraOptions(searchValue, items.*)'
                 },
                 _hasExtraSkills: {
                     type: Boolean,
@@ -220,55 +224,56 @@
         }
         connectedCallback() {
             super.connectedCallback();
-            this.$.select.addEventListener('tap', this._toggleList.bind(this), false);
-            this.$.select.addEventListener('click', this._toggleList.bind(this), false);
         }
         _toggleList (e) {
             this.set('isHidden', !this.isHidden);
         }
-        _filterSkills (searchValue) {
-            const skills = this.items.filter((item) => {
+        _filterOptions (searchValue) {
+            // console.log('_filterOptions', arguments);
+            const options = this.items.filter((item) => {
                 // not extra skill
-                return !item.extra;
+                return item.extra != 'true';
             });
             if (searchValue === '') {
-                return skills;
+                return options;
             };
-            return skills.filter((item) => {
-                const lowerLabel = item.label.toLowerCase();
+            return options.filter((item) => {
+                const lowerLabel = item.name.toLowerCase();
                 const lowerSearch = searchValue.toLowerCase();
                 return lowerLabel.indexOf(lowerSearch) != -1;
             });
         }
-        _filterExtraSkills (searchValue) {
-            const skills = this.items.filter((item) => {
+        _filterExtraOptions (searchValue) {
+            const options = this.items.filter((item) => {
                 // extra skill
-                return item.extra === true;
+                return item.extra == 'true';
             });
             if (searchValue === '') {
-                return skills;
+                return options;
             };
-            return skills.filter((item) => {
-                const lowerLabel = item.label.toLowerCase();
+            return options.filter((item) => {
+                const lowerLabel = item.name.toLowerCase();
                 const lowerSearch = searchValue.toLowerCase();
                 return lowerLabel.indexOf(lowerSearch) != -1;
             });
         }
-        _computeHasExtraOptions (skills) {
-            return skills && skills.base && skills.base.length > 0;
+        _computeHasExtraOptions (options) {
+            return options && options.base && options.base.length > 0;
         }
         _addSelected (e) {
+            console.log('add selected', e);
             const selectedItem = this.items.find((item) => {
-                return e && e.detail && item && item.name == e.detail.item.name;
+                return e && e.detail && item && item.id == e.detail.item.id;
             });
             this.push('selected', selectedItem);
             this.dispatchEvent(
                 new CustomEvent(
-                    'selected',
+                    'selection-changed',
                     {
                         bubbles: false,
                         detail: {
-                            selectedItem: selectedItem,
+                            type: 'select',
+                            item: Object.assign({}, selectedItem),
                             selected: this.selected
                         }
                     }
@@ -278,17 +283,18 @@
         _removeSelected (e) {
             const selectedItem = e.detail.item;
             const removedIndex = this.selected.findIndex((item) => {
-                return selectedItem && item && item.name == selectedItem.name;
+                return selectedItem && item && item.id == selectedItem.id;
             });
             const deselectedItem = this.selected[removedIndex];
             this.splice('selected', removedIndex, 1);
             this.dispatchEvent(
                 new CustomEvent(
-                    'deselected',
+                    'selection-changed',
                     {
                         bubbles: false,
                         detail: {
-                            deselectedItem: deselectedItem,
+                            type: 'deselect',
+                            item: Object.assign({}, deselectedItem),
                             selected: this.selected
                         }
                     }
