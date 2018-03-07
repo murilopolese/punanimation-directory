@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/app-layout/demo/sample-content.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -29,12 +30,6 @@
                 color: var(--color-black);
                 text-decoration: none;
             }
-            #drawerMenu {
-                z-index: 30;
-                --app-drawer-content-container: {
-                    box-shadow: 1px 0 2px 1px rgba(0,0,0,0.18);
-                }
-            }
             app-header {
                 position: fixed;
                 top: 0;
@@ -47,6 +42,32 @@
             app-header paper-icon-button {
                 --paper-icon-button-ink-color: var(--color-black);
             }
+            #drawerMenu {
+                z-index: 30;
+                --app-drawer-content-container: {
+                    box-shadow: 1px 0 2px 1px rgba(0,0,0,0.18);
+                }
+            }
+            #drawerMenu .navigation {
+                margin-top: 15px;
+            }
+            #drawerMenu .navigation .item {
+                font-weight: 600;
+                font-size: 18px;
+                letter-spacing: 0.15em;
+                margin-right: 20px;
+                padding: 7px 15px;
+            }
+            #drawerMenu .social-media {
+                margin-top: 15px;
+                text-align: center;
+            }
+            #drawerMenu .social-media .item {
+                --punani-fab-size: 25px;
+                --punani-fab-padding: 10px;
+                width: 25px;
+            }
+
             .container {
                 display: block;
                 position: relative;
@@ -89,18 +110,17 @@
             #title .logo {
                 width: 130px;
                 margin-bottom: 10px;
+                cursor: pointer;
             }
             #title .description {
                 letter-spacing: 0.07em;
+                cursor: pointer;
             }
 
             #filters .col {
                 margin: 10px 0 15px 0;
             }
 
-            #feed {
-                padding-top: 220px;
-            }
             #feed .image {
                 width: 540px;
                 max-width: 100%;
@@ -130,6 +150,32 @@
                 font-size: 10px;
                 letter-spacing: 0.2em;
                 margin-left: 4px;
+            }
+
+            #about .col {
+                font-size: 14px;
+                letter-spacing: 0.07em;
+            }
+            #about .title {
+                font-size: 32px;
+                letter-spacing: 0.02em;
+                font-weight: 900;
+                text-align: center;
+                text-transform: uppercase;
+            }
+            #about .email {
+                font-size: 18px;
+                font-weight: 900;
+                letter-spacing: 0.02em;
+            }
+            #about .col .title,
+            #about .col .email,
+            #about .col p {
+                padding: 0 15px;
+            }
+
+            .padding-top {
+                padding-top: 220px;
             }
 
             .dialog {
@@ -211,8 +257,8 @@
                 <div class="container" style="height: 100%;">
                     <div id="navigation">
                         <div class="hide-mobile">
-                            <a class="item" href="#">About</a>
-                            <a class="item" href="#">Join</a>
+                            <a class="item" href="#" on-tap="renderAbout">About</a>
+                            <a class="item" target="_blank" href="https://typeform.com">Join</a>
                         </div>
                         <div class="hide-desktop">
                             <paper-icon-button
@@ -223,17 +269,18 @@
                     </div>
                     <div id="title">
                         <iron-image
+                            on-tap="renderFeed"
                             class="logo"
                             src="/assets/logo.svg" alt="">
                         </iron-image>
-                        <div class="description">
+                        <div class="description" on-tap="renderFeed">
                             A directory of women, trans and non-binary people
                             working with animation and motion graphics.
                         </div>
                     </div>
                     <div id="social-media">
                         <div class="hide-mobile">
-                            <a href="#">
+                            <a target="_blank" href="https://facebook.com">
                                 <punani-fab>
                                     <iron-image
                                         src="/assets/facebook.svg"
@@ -242,7 +289,7 @@
                                     </iron-image>
                                 </punani-fab>
                             </a>
-                            <a href="#">
+                            <a target="_blank" href="https://vimeo.com/channels/punanimation">
                                 <punani-fab>
                                     <iron-image
                                         src="/assets/vimeo.svg"
@@ -251,7 +298,7 @@
                                     </iron-image>
                                 </punani-fab>
                             </a>
-                            <a href="#">
+                            <a target="_blank" href="https://instagram.com/punanimation/">
                                 <punani-fab>
                                     <iron-image
                                         src="/assets/instagram.svg"
@@ -264,67 +311,111 @@
                     </div>
                 </div>
             </div>
-            <div class="container" sticky>
-                <div id="filters" class="row">
-                    <div class="col">
-                        <punani-filter
-                            id="locationFilter"
-                            items="[[locations]]"
-                            is-hidden="{{locationHidden}}"
-                            label="Location"
-                            on-selection-changed="locationChanged">
-                        </punani-filter>
+            <iron-pages
+                selected="[[currentPageName]]"
+                attr-for-selected="page-name"
+                fallback-selection="fallback"
+                sticky>
+                <div page-name="feed">
+                    <div class="container">
+                        <div id="filters" class="row">
+                            <div class="col">
+                                <punani-filter
+                                    id="locationFilter"
+                                    items="[[locations]]"
+                                    is-hidden="{{locationHidden}}"
+                                    label="Location"
+                                    on-selection-changed="locationChanged">
+                                </punani-filter>
+                            </div>
+                            <div class="col">
+                                <punani-filter
+                                    id="skillsFilter"
+                                    items="[[skills]]"
+                                    extra-label="Extra Skills"
+                                    is-hidden="{{skillsHidden}}"
+                                    label="Skills"
+                                    on-selection-changed="skillsChanged">
+                                </punani-filter>
+                            </div>
+                            <div class="col">
+                                <punani-filter
+                                    id="softwaresFilter"
+                                    items="[[softwares]]"
+                                    is-hidden="{{softwaresHidden}}"
+                                    label="Softwares"
+                                    on-selection-changed="softwaresChanged">
+                                </punani-filter>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col">
-                        <punani-filter
-                            id="skillsFilter"
-                            items="[[skills]]"
-                            extra-label="Extra Skills"
-                            is-hidden="{{skillsHidden}}"
-                            label="Skills"
-                            on-selection-changed="skillsChanged">
-                        </punani-filter>
+                </div>
+                <div page-name="fallback">
+                    <div class="container"></div>
+                </div>
+            </iron-pages>
+        </app-header>
+
+        <iron-pages
+            selected="[[currentPageName]]"
+            attr-for-selected="page-name"
+            fallback-selection="fallback">
+            <div page-name="feed">
+                <div id="feed" class="container padding-top">
+                    <iron-scroll-threshold id="ironScrollTheshold" on-lower-threshold="loadMoreData" scroll-target="document">
+                            <div class="row">
+                                <template is="dom-repeat"
+                                items="[[paginatedPunanis]]"
+                                restamp>
+                                <div class="col" id="col-[[index]]" on-tap="openDialog">
+                                    <iron-image
+                                    class="image"
+                                    sizing="cover"
+                                    src="[[item.coverImage]]"
+                                    alt="[[item.name]]">
+                                </iron-image>
+                                <a>
+                                    <span class="name">
+                                        [[item.name]]
+                                    </span>
+                                    <span class="location">
+                                        ([[item.location.city]], [[item.location.country]])
+                                    </span>
+                                </a>
+                            </div>
+                        </template>
                     </div>
-                    <div class="col">
-                        <punani-filter
-                            id="softwaresFilter"
-                            items="[[softwares]]"
-                            is-hidden="{{softwaresHidden}}"
-                            label="Softwares"
-                            on-selection-changed="softwaresChanged">
-                        </punani-filter>
+                    </iron-scroll-threshold>
+                </div>
+            </div>
+
+            <div page-name="about">
+                <div id="about" class="container padding-top">
+                    <div class="row">
+                        <div class="col">
+                            <div class="title">Who</div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                        <div class="col">
+                            <div class="title">Why</div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                        <div class="col">
+                            <div class="title">
+                                <iron-image src="assets/email.svg" width="50"></iron-image>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <div class="email"><a target="_blank" href="mailto:hey@punanimation.com">hey@punanimation.com</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </app-header>
-
-        <div id="feed" class="container">
-            <iron-scroll-threshold id="ironScrollTheshold" on-lower-threshold="loadMoreData" scroll-target="document">
-                <div class="row">
-                    <template is="dom-repeat"
-                        items="[[paginatedPunanis]]"
-                        restamp
-                        >
-                        <div class="col" id="col-[[index]]" on-tap="openDialog">
-                            <iron-image
-                                class="image"
-                                sizing="cover"
-                                src="[[item.coverImage]]"
-                                alt="[[item.name]]">
-                            </iron-image>
-                            <a>
-                                <span class="name">
-                                    [[item.name]]
-                                </span>
-                                <span class="location">
-                                    ([[item.location.city]], [[item.location.country]])
-                                </span>
-                            </a>
-                        </div>
-                    </template>
+            <div page-name="fallback">
+                <div class="container padding-top" page-name="fallback">
                 </div>
-            </iron-scroll-threshold>
-        </div>
+            </div>
+        </iron-pages>
 
         <template is="dom-repeat" items="[[punanis]]" restamp restampKey="_id">
             <paper-dialog id$="dialog-[[item._id]]" class="dialog" with-backdrop>
@@ -369,14 +460,19 @@
         </template>
 
         <app-drawer id="drawerMenu" align="start">
-            <div>
-                <a href="#">About</a>
+            <div class="navigation">
+                <div class="item">
+                    <a href="#" on-tap="renderFeed">Home</a>
+                </div>
+                <div class="item">
+                    <a href="#" on-tap="renderAbout">About</a>
+                </div>
+                <div class="item">
+                    <a target="_blank" href="https://typeform.com">Join</a>
+                </div>
             </div>
-            <div>
-                <a href="#">Join</a>
-            </div>
-            <div>
-                <a href="#">
+            <div class="social-media">
+                <a class="item" target="_blank" href="https://facebook.com">
                     <punani-fab>
                         <iron-image
                             src="/assets/facebook.svg"
@@ -385,7 +481,7 @@
                         </iron-image>
                     </punani-fab>
                 </a>
-                <a href="#">
+                <a class="item" target="_blank" href="https://vimeo.com/channels/punanimation">
                     <punani-fab>
                         <iron-image
                             src="/assets/vimeo.svg"
@@ -394,7 +490,7 @@
                         </iron-image>
                     </punani-fab>
                 </a>
-                <a href="#">
+                <a class="item" target="_blank" href="https://instagram.com/punanimation/">
                     <punani-fab>
                         <iron-image
                             src="/assets/instagram.svg"
@@ -464,7 +560,7 @@
                     type: Array,
                     value: () => { return []; }
                 },
-                currentPage: {
+                currentFeedPage: {
                     type: Number,
                     value: 0
                 },
@@ -474,7 +570,11 @@
                 },
                 paginatedPunanis: {
                     type: Array,
-                    computed: 'computePaginatedPunanis(filteredPunanis.*, currentPage)'
+                    computed: 'computePaginatedPunanis(filteredPunanis.*, currentFeedPage)'
+                },
+                currentPageName: {
+                    type: String,
+                    value: 'feed'
                 }
             };
         }
@@ -636,7 +736,7 @@
                 return;
             }
             // Changing any filter, reset pagination and scroll to top
-            this.set('currentPage', 0);
+            this.set('currentFeedPage', 0);
             return punanis.base.filter((punani) => {
                 // The check for "in" something is either has no filter or has
                 // a matching property with the selected filters
@@ -657,15 +757,25 @@
             });
         }
         loadMoreData () {
-            this.set('currentPage', this.currentPage+1);
+            this.set('currentFeedPage', this.currentFeedPage+1);
             this.$.ironScrollTheshold.clearTriggers();
         }
-        computePaginatedPunanis (filteredPunanis, currentPage) {
-            const lastIndex = currentPage > 0 ? currentPage * this.pageSize: this.pageSize;
+        computePaginatedPunanis (filteredPunanis, currentFeedPage) {
+            const lastIndex = currentFeedPage > 0 ? currentFeedPage * this.pageSize: this.pageSize;
             if (lastIndex > filteredPunanis.base.lenth) {
                 return filteredPunanis.base;
             }
             return filteredPunanis.base.slice(0, lastIndex);
+        }
+        renderFeed() {
+            this.set('currentPageName', 'feed');
+            this.$.drawerMenu.close();
+            return false;
+        }
+        renderAbout() {
+            this.set('currentPageName', 'about');
+            this.$.drawerMenu.close();
+            return false;
         }
     }
 
