@@ -3,5 +3,21 @@
     "rules": [
       "polymer-2"
     ]
-  }
+  },
+  "fragments": [
+
+  ],
+  "builds": [{
+    "bundle": true,
+    "js": {
+      "compile": true,
+      "minify": true
+    },
+    "css": {"minify": true},
+    "html": {"minify": true}
+  }],
+  "sources": [
+    "src/**/*",
+    "assets/**/*"
+  ]
 }
