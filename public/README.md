@@ -36,7 +36,6 @@ Your application is already set up to be tested via [web-component-tester](https
 - link join to form
 - social media links
 - About copy
-- box shadow on filter list
 - review sizes, margins, etc
 
 # Roadmap
@@ -57,3 +56,4 @@ Your application is already set up to be tested via [web-component-tester](https
 - infinite scroll
 - about page
 - drawer menu
+- box shadow on filter list
