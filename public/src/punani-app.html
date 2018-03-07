@@ -85,7 +85,7 @@
             #navigation,
             #social-media {
                 position: absolute;
-                top: 15px;
+                top: 20px;
             }
             #social-media {
                 right: 20px;
@@ -96,8 +96,9 @@
             #navigation .item {
                 font-weight: 600;
                 font-size: 12px;
-                letter-spacing: 0.15em;
+                letter-spacing: 0.1em;
                 margin-right: 20px;
+                text-transform: uppercase;
             }
 
             #title {
@@ -148,13 +149,19 @@
             #feed .location {
                 display: inline-block;
                 font-size: 10px;
-                letter-spacing: 0.2em;
+                letter-spacing: 0.13em;
                 margin-left: 4px;
             }
 
             #about .col {
-                font-size: 14px;
+                font-size: 12px;
                 letter-spacing: 0.07em;
+            }
+            #about .col a:link,
+            #about .col a:visited,
+            #about .col a:active,
+            #about .col a:hover {
+                font-weight: 700;
             }
             #about .title {
                 font-size: 32px;
@@ -167,6 +174,7 @@
                 font-size: 18px;
                 font-weight: 900;
                 letter-spacing: 0.02em;
+                line-height: 1em;
             }
             #about .col .title,
             #about .col .email,
@@ -198,6 +206,9 @@
                 text-transform: uppercase;
                 margin-top: 0.8em;
                 line-height: 0.8em;
+            }
+            .dialog .location {
+                line-height: 1em;
             }
             .dialog .link {
                 float: right;
@@ -261,7 +272,7 @@
                     <div id="navigation">
                         <div class="hide-mobile">
                             <a class="item" href="#" on-tap="renderAbout">About</a>
-                            <a class="item" target="_blank" href="https://typeform.com">Join</a>
+                            <a class="item" target="_blank" href="https://punanimation.typeform.com/to/ZJL9Gx">Join</a>
                         </div>
                         <div class="hide-desktop">
                             <paper-icon-button
@@ -283,8 +294,8 @@
                     </div>
                     <div id="social-media">
                         <div class="hide-mobile">
-                            <a target="_blank" href="https://facebook.com">
-                                <punani-fab>
+                            <a target="_blank" href="https://www.facebook.com/groups/punanimation/">
+                                <punani-fab style="width: 20px;">
                                     <iron-image
                                         src="/assets/facebook.svg"
                                         width="30"
@@ -397,18 +408,64 @@
                     <div class="row">
                         <div class="col">
                             <div class="title">Who</div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p>
+                                Punanimation was founded in April 2015, by 3
+                                friends: <a target="_blank" href="https://beegrandinetti.com">Bee Grandinetti</a>,
+                                <a target="_blank" href="https://vimeo.com/hedvigahlberg">Hedvig Ahlberg</a> and
+                                <a target="_blank" href="http://www.linnfritz.com/">Linn Fritz</a>.
+                            </p>
+                            <p>
+                                Although we were originally just 3, today our
+                                whole community is built by over 1700 women,
+                                trans and non-binary friends from all over the
+                                world, working within the many different fields
+                                and specializations of animation and motion
+                                graphics.
+                            </p>
                         </div>
                         <div class="col">
                             <div class="title">Why</div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                <p>
+                                    We were a bit tired of this industry being
+                                    too much of a boy’s club, so we decided to
+                                    do something about it.
+                                </p>
+                                <p>
+                                    Punanimation started as facebook group,
+                                    aiming to bring the ladies, trans and
+                                    non-binary people together. The community
+                                    started to expand and our dear members
+                                    helped shaping it into a lively, inspiring
+                                    and awesome platform to exchange knowledge
+                                    and support.
+                                </p>
+                                <p>
+                                    Since then, we've been receiving so many
+                                    words of encouragement from our members that
+                                    it just confirms this was not only the right
+                                    thing to do, but very much needed.
+                                </p>
+                                <p>
+                                    This pushed us to work on the next, bigger
+                                    step: putting together a directory that
+                                    makes it easy for anyone to get a hold of
+                                    that talent.
+                                </p>
+                                <p>
+                                    No more excuses for male-only studios,
+                                    speaker line-ups and director rosters.
+                                    Diversity exists, it's got skills and it's
+                                    here.
+                                </p>
                         </div>
                         <div class="col">
                             <div class="title">
-                                <iron-image src="assets/email.svg" width="50"></iron-image>
+                                <iron-image src="assets/email.svg" width="38"></iron-image>
                             </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p>
+                                If you have any questions or just wanna reach
+                                out, send a line to:
+                            </p>
                             <div class="email"><a target="_blank" href="mailto:hey@punanimation.com">hey@punanimation.com</a></div>
                         </div>
                     </div>
@@ -426,7 +483,7 @@
                     <div class="name">
                         [[item.name]]
                         <template is="dom-if" if="[[item.website]]">
-                            <a href$="[[!!item.website]]" target="_blank">
+                            <a href$="[[item.website]]" target="_blank">
                                 <punani-fab class="link">
                                     <iron-image
                                         src="/assets/link02.svg"
@@ -471,11 +528,11 @@
                     <a href="#" on-tap="renderAbout">About</a>
                 </div>
                 <div class="item">
-                    <a target="_blank" href="https://typeform.com">Join</a>
+                    <a target="_blank" href="https://punanimation.typeform.com/to/ZJL9Gx">Join</a>
                 </div>
             </div>
             <div class="social-media">
-                <a class="item" target="_blank" href="https://facebook.com">
+                <a class="item" target="_blank" href="https://www.facebook.com/groups/punanimation/">
                     <punani-fab>
                         <iron-image
                             src="/assets/facebook.svg"

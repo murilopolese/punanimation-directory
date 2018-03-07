@@ -33,10 +33,6 @@ $ polymer test
 Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
 
 ## TODO:
-- link join to form
-- social media links
-- About copy
-- review sizes, margins, etc
 
 # Roadmap
 - group location by country
@@ -57,3 +53,7 @@ Your application is already set up to be tested via [web-component-tester](https
 - about page
 - drawer menu
 - box shadow on filter list
+- link join to form
+- social media links
+- About copy
+- review sizes, margins, etc
