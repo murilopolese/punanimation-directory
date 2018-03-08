@@ -817,6 +817,14 @@
             });
         }
         loadMoreData () {
+            if (ga) {
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'paginate',
+                    eventAction: this.currentFeedPage+1,
+                    eventLabel: 'Navigation'
+                });
+            }
             this.set('currentFeedPage', this.currentFeedPage+1);
             this.$.ironScrollTheshold.clearTriggers();
         }
@@ -828,11 +836,27 @@
             return filteredPunanis.base.slice(0, lastIndex);
         }
         renderFeed() {
+            if (ga) {
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'pageView',
+                    eventAction: 'feed',
+                    eventLabel: 'Navigation'
+                });
+            }
             this.set('currentPageName', 'feed');
             this.$.drawerMenu.close();
             return false;
         }
         renderAbout() {
+            if (ga) {
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'pageView',
+                    eventAction: 'about',
+                    eventLabel: 'Navigation'
+                });
+            }
             this.set('currentPageName', 'about');
             this.$.drawerMenu.close();
             return false;
