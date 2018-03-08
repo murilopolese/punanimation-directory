@@ -786,6 +786,25 @@
         softwaresChanged (e) {
             this.set('softwaresFilter', e.detail.selected.slice(0));
         }
+        shuffle(array) {
+            let counter = array.length;
+
+            // While there are elements in the array
+            while (counter > 0) {
+                // Pick a random index
+                let index = Math.floor(Math.random() * counter);
+
+                // Decrease counter by 1
+                counter--;
+
+                // And swap the last element with it
+                let temp = array[counter];
+                array[counter] = array[index];
+                array[index] = temp;
+            }
+
+            return array;
+        }
         filterPunanis (punanis, locationFilter, skillsFilter, softwaresFilter) {
             if (
                 !locationFilter || !locationFilter.base
@@ -797,7 +816,7 @@
             }
             // Changing any filter, reset pagination and scroll to top
             this.set('currentFeedPage', 0);
-            return punanis.base.filter((punani) => {
+            const filteredPunanis = punanis.base.filter((punani) => {
                 // The check for "in" something is either has no filter or has
                 // a matching property with the selected filters
                 const inLocation = locationFilter.base.length == 0 || locationFilter.base.find((filter) => {
@@ -815,6 +834,7 @@
                 });
                 return inLocation && inSkills && inSoftwares;
             });
+            return this.shuffle(filteredPunanis);
         }
         loadMoreData () {
             this.set('currentFeedPage', this.currentFeedPage+1);
