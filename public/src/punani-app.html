@@ -205,7 +205,8 @@
                 letter-spacing: 0.03em;
                 text-transform: uppercase;
                 margin-top: 0.8em;
-                line-height: 0.8em;
+                margin-bottom: 0.4em;
+                line-height: 1em;
             }
             .dialog .location {
                 line-height: 1em;
@@ -431,7 +432,7 @@
                                     do something about it.
                                 </p>
                                 <p>
-                                    Punanimation started as facebook group,
+                                    Punanimation started as a facebook group,
                                     aiming to bring the ladies, trans and
                                     non-binary people together. The community
                                     started to expand and our dear members
@@ -497,24 +498,30 @@
                     <div class="location">
                         <span>[[item.location.city]], [[item.location.country]]</span>
                     </div>
-                    <div class="title">SKILLS</div>
-                    <div>
-                        <template is="dom-repeat" items="[[filterSkills(item.skills, 0)]]" as="skill">
-                            <span>[[skill.name]]</span><span hidden$="[[lastSkill(index, item.skills, 0)]]">,</span><span hidden$="[[!lastSkill(index, item.skills, 0)]]">.</span>
-                        </template>
-                    </div>
-                    <div class="title">EXTRA SKILLS</div>
-                    <div>
-                        <template is="dom-repeat" items="[[filterSkills(item.skills, 1)]]" as="skill">
-                            <span>[[skill.name]]</span><span hidden$="[[lastSkill(index, item.skills, 1)]]">,</span><span hidden$="[[!lastSkill(index, item.skills, 1)]]">.</span>
-                        </template>
-                    </div>
-                    <div class="title">SOFTWARES</div>
-                    <div>
-                        <template is="dom-repeat" items="[[item.softwares]]" as="softwares">
-                            <span>[[softwares.name]]</span><span hidden$="[[lastItem(index, item.softwares)]]">,</span><span hidden$="[[!lastItem(index, item.softwares)]]">.</span>
-                        </template>
-                    </div>
+                    <template is="dom-if" if="[[hasSkills(item.skills, 0)]]">
+                        <div class="title">SKILLS</div>
+                        <div>
+                            <template is="dom-repeat" items="[[filterSkills(item.skills, 0)]]" as="skill">
+                                <span>[[skill.name]]</span><span hidden$="[[lastSkill(index, item.skills, 0)]]">,</span><span hidden$="[[!lastSkill(index, item.skills, 0)]]">.</span>
+                            </template>
+                        </div>
+                    </template>
+                    <template is="dom-if" if="[[hasSkills(item.skills, 1)]]">
+                        <div class="title">EXTRA SKILLS</div>
+                        <div>
+                            <template is="dom-repeat" items="[[filterSkills(item.skills, 1)]]" as="skill">
+                                <span>[[skill.name]]</span><span hidden$="[[lastSkill(index, item.skills, 1)]]">,</span><span hidden$="[[!lastSkill(index, item.skills, 1)]]">.</span>
+                            </template>
+                        </div>
+                    </template>
+                    <template is="dom-if" if="[[hasSoftwares(item.softwares)]]">
+                        <div class="title">SOFTWARES</div>
+                        <div>
+                            <template is="dom-repeat" items="[[item.softwares]]" as="softwares">
+                                <span>[[softwares.name]]</span><span hidden$="[[lastItem(index, item.softwares)]]">,</span><span hidden$="[[!lastItem(index, item.softwares)]]">.</span>
+                            </template>
+                        </div>
+                    </template>
                 </div>
             </paper-dialog>
         </template>
@@ -776,8 +783,14 @@
                 });
             }
         }
+        hasSkills (skills, extra) {
+            const filteredSkills = this.filterSkills(skills, extra);
+            return filteredSkills.length > 1;
+        }
+        hasSoftwares (softwares) {
+            return softwares && softwares.length > 1;
+        }
         locationChanged (e) {
-            console.log('locationChanged', e.detail);
             this.set('locationFilter', e.detail.selected.slice(0));
         }
         skillsChanged (e) {
