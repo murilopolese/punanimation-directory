@@ -8,6 +8,7 @@
 <link rel="import" href="../../bower_components/app-layout/demo/sample-content.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="./punani-fab.html">
 <link rel="import" href="./punani-filter.html">
 
@@ -53,14 +54,14 @@
             }
             #drawerMenu .navigation .item {
                 font-weight: 600;
-                font-size: 18px;
-                letter-spacing: 0.15em;
+                font-size: 14px;
+                letter-spacing: 0.1em;
                 margin-right: 20px;
                 padding: 7px 15px;
+                text-transform: uppercase;
             }
             #drawerMenu .social-media {
                 margin-top: 15px;
-                text-align: center;
             }
             #drawerMenu .social-media .item {
                 --punani-fab-size: 25px;
@@ -152,6 +153,16 @@
                 letter-spacing: 0.13em;
                 margin-left: 4px;
             }
+            #feed .footer {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                width: 100%;
+                height: 100px;
+            }
+            #feed .footer paper-spinner-lite {
+                --paper-spinner-color: var(--color-yellow);
+              }
 
             #about .col {
                 font-size: 12px;
@@ -274,6 +285,7 @@
                         <div class="hide-mobile">
                             <a class="item" href="#" on-tap="renderAbout">About</a>
                             <a class="item" target="_blank" href="https://punanimation.typeform.com/to/ZJL9Gx">Join</a>
+                            <a class="item" target="_blank" href="https://www.etsy.com/uk/shop/Punanimation">Support</a>
                         </div>
                         <div class="hide-desktop">
                             <paper-icon-button
@@ -289,7 +301,7 @@
                             src="/assets/logo.svg" alt="">
                         </iron-image>
                         <div class="description" on-tap="renderFeed">
-                            A directory of women, trans and non-binary people
+                            A directory of women, trans and non-binary friends
                             working with animation and motion graphics.
                         </div>
                     </div>
@@ -355,7 +367,7 @@
                             </div>
                             <div class="col">
                                 <punani-filter
-                                    id="softwaresFilter"
+                                    id="softwareFilter"
                                     items="[[softwares]]"
                                     is-hidden="{{softwaresHidden}}"
                                     label="Softwares"
@@ -379,27 +391,31 @@
                 <div id="feed" class="container padding-top">
                     <iron-scroll-threshold id="ironScrollTheshold" on-lower-threshold="loadMoreData" scroll-target="document">
                             <div class="row">
-                                <template is="dom-repeat"
-                                items="[[paginatedPunanis]]"
-                                restamp>
-                                <div class="col" id="col-[[index]]" on-tap="openDialog">
-                                    <iron-image
-                                    class="image"
-                                    sizing="cover"
-                                    src="[[item.coverImage]]"
-                                    alt="[[item.name]]">
-                                </iron-image>
-                                <a>
-                                    <span class="name">
-                                        [[item.name]]
-                                    </span>
-                                    <span class="location">
-                                        ([[item.location.city]], [[item.location.country]])
-                                    </span>
-                                </a>
+                                <template
+                                    is="dom-repeat"
+                                    items="[[paginatedPunanis]]"
+                                    restamp>
+                                    <div class="col" id="col-[[index]]" on-tap="openDialog">
+                                        <iron-image
+                                            class="image"
+                                            sizing="cover"
+                                            src="[[item.coverImage]]"
+                                            alt="[[item.name]]">
+                                        </iron-image>
+                                        <a>
+                                            <span class="name">
+                                                [[item.name]]
+                                            </span>
+                                            <span class="location">
+                                                ([[item.location.city]], [[item.location.country]])
+                                            </span>
+                                        </a>
+                                    </div>
+                                </template>
                             </div>
-                        </template>
-                    </div>
+                            <div class="footer">
+                                <paper-spinner-lite active="[[!allPunanisLoaded]]" class="thick"></paper-spinner-lite>
+                            </div>
                     </iron-scroll-threshold>
                 </div>
             </div>
@@ -417,7 +433,7 @@
                             </p>
                             <p>
                                 Although we were originally just 3, today our
-                                whole community is built by over 1700 women,
+                                whole community is built by over 2000 women,
                                 trans and non-binary friends from all over the
                                 world, working within the many different fields
                                 and specializations of animation and motion
@@ -432,9 +448,9 @@
                                     do something about it.
                                 </p>
                                 <p>
-                                    Punanimation started as a facebook group,
+                                    Punanimation started as a Facebook group,
                                     aiming to bring the ladies, trans and
-                                    non-binary people together. The community
+                                    non-binary friends together. The community
                                     started to expand and our dear members
                                     helped shaping it into a lively, inspiring
                                     and awesome platform to exchange knowledge
@@ -473,8 +489,7 @@
                 </div>
             </div>
             <div page-name="fallback">
-                <div class="container padding-top" page-name="fallback">
-                </div>
+                <div class="container padding-top"></div>
             </div>
         </iron-pages>
 
@@ -514,7 +529,7 @@
                             </template>
                         </div>
                     </template>
-                    <template is="dom-if" if="[[hasSoftwares(item.softwares)]]">
+                    <template is="dom-if" if="[[hasItems(item.softwares)]]">
                         <div class="title">SOFTWARES</div>
                         <div>
                             <template is="dom-repeat" items="[[item.softwares]]" as="softwares">
@@ -536,6 +551,9 @@
                 </div>
                 <div class="item">
                     <a target="_blank" href="https://punanimation.typeform.com/to/ZJL9Gx">Join</a>
+                </div>
+                <div class="item">
+                    <a target="_blank" href="https://www.etsy.com/uk/shop/Punanimation">Support</a>
                 </div>
             </div>
             <div class="social-media">
@@ -580,68 +598,120 @@
         static get is() { return 'punani-app'; }
         static get properties() {
             return {
+                /**
+                * Current page being viewed
+                */
+                currentPageName: {
+                    type: String,
+                    value: 'feed'
+                },
+                /**
+                * Keep track if the "location" dropdown is opened
+                */
                 locationHidden: {
                     type: Boolean,
                     value: true,
                     notify: true
                 },
+                /**
+                * Keep track if the "skills" dropdown is opened
+                */
                 skillsHidden: {
                     type: Boolean,
                     value: true,
                     notify: true
                 },
+                /**
+                * Keep track if the "software" dropdown is opened
+                */
                 softwaresHidden: {
                     type: Boolean,
                     value: true,
                     notify: true
                 },
+                /**
+                * All available locations
+                */
                 locations: {
                     type: Array,
                     value: () => { return []; }
                 },
+                /**
+                * All available skills
+                */
                 skills: {
                     type: Array,
                     value: () => { return []; }
                 },
+                /**
+                * All available software
+                */
                 softwares: {
                     type: Array,
                     value: () => { return []; }
                 },
+                /**
+                * All available punanis
+                */
                 punanis: {
                     type: Array,
                     value: () => { return []; }
                 },
-                filteredPunanis: {
-                    type: Array,
-                    computed: 'filterPunanis(punanis.*, locationFilter.*, skillsFilter.*, softwaresFilter.*)'
-                },
+                /**
+                * Currently selected location filters
+                */
                 locationFilter: {
                     type: Array,
                     value: () => { return []; }
                 },
+                /**
+                * Currently selected skills filters
+                */
                 skillsFilter: {
                     type: Array,
                     value: () => { return []; }
                 },
-                softwaresFilter: {
+                /**
+                * Currently selected softwares filters
+                */
+                softwareFilter: {
                     type: Array,
                     value: () => { return []; }
                 },
-                currentFeedPage: {
-                    type: Number,
-                    value: 0
+                /**
+                * All punanis that fullfil the filters
+                */
+                filteredPunanis: {
+                    type: Array,
+                    computed: 'filterPunanis(punanis.*, locationFilter.*, skillsFilter.*, softwareFilter.*)'
                 },
+                /**
+                * How many punanis to display by "page"
+                */
                 pageSize: {
                     type: Number,
                     value: 12
                 },
+                /**
+                * Current "page"
+                */
+                currentFeedPage: {
+                    type: Number,
+                    value: 0
+                },
+                /**
+                * All filtered punanis until the current page
+                */
                 paginatedPunanis: {
                     type: Array,
                     computed: 'computePaginatedPunanis(filteredPunanis.*, currentFeedPage)'
                 },
-                currentPageName: {
-                    type: String,
-                    value: 'feed'
+                /**
+                * Flag if all the filtered punanis are already been shown
+                */
+                allPunanisLoaded: {
+                    type: Boolean,
+                    computed: 'computeAllPunanisLoaded(filteredPunanis.*, paginatedPunanis.*)'
                 }
             };
         }
@@ -650,10 +720,12 @@
         }
         connectedCallback() {
             super.connectedCallback();
+            // Hide all dropdowns when those events are triggered
             window.addEventListener('click', this.hideOptions.bind(this), false);
             window.addEventListener('tap', this.hideOptions.bind(this), false);
             // window.addEventListener('scroll', this.hideOptions.bind(this), false);
 
+            // Load all available locations to filter
             fetch('/api/locations')
                 .then(r => r.json())
                 .then((response) => {
@@ -674,6 +746,7 @@
                         this.set('locations', locations);
                     }
                 });
+            // Load all available skills to filter
             fetch('/api/skills')
                 .then(r => r.json())
                 .then((response) => {
@@ -688,6 +761,7 @@
                         this.set('skills', skills);
                     }
                 });
+            // Load all available software to filter
             fetch('/api/softwares')
                 .then(r => r.json())
                 .then((response) => {
@@ -701,6 +775,7 @@
                         this.set('softwares', softwares);
                     }
                 });
+            // Load all punanis
             fetch('/api/entries')
                 .then(r => r.json())
                 .then((response) => {
@@ -709,21 +784,29 @@
                     }
                 });
         }
+        /**
+        * Toggles visibility of drawer menu
+        * @param {Event} e
+        */
         toggleMenu(e) {
             this.$.drawerMenu.toggle();
         }
+        /**
+        * Toggles visibility of drawer menu
+        * @param {Event} e
+        */
         hideOptions(e) {
             if (!e.path) {
                 // Screw you, Safari
                 if (!this.$.locationFilter.isHidden) {
                     this.$.skillsFilter.set('isHidden', true);
-                    this.$.softwaresFilter.set('isHidden', true);
+                    this.$.softwareFilter.set('isHidden', true);
                 }
                 if (!this.$.skillsFilter.isHidden) {
                     this.$.locationFilter.set('isHidden', true);
-                    this.$.softwaresFilter.set('isHidden', true);
+                    this.$.softwareFilter.set('isHidden', true);
                 }
-                if (!this.$.softwaresFilter.isHidden) {
+                if (!this.$.softwareFilter.isHidden) {
                     this.$.locationFilter.set('isHidden', true);
                     this.$.skillsFilter.set('isHidden', true);
                 }
@@ -735,22 +818,26 @@
             if (!filterElement) {
                 this.$.locationFilter.set('isHidden', true);
                 this.$.skillsFilter.set('isHidden', true);
-                this.$.softwaresFilter.set('isHidden', true);
+                this.$.softwareFilter.set('isHidden', true);
             } else {
                 if (filterElement.id == 'locationFilter' && !filterElement.isHidden) {
                     this.$.skillsFilter.set('isHidden', true);
-                    this.$.softwaresFilter.set('isHidden', true);
+                    this.$.softwareFilter.set('isHidden', true);
                 }
                 if (filterElement.id == 'skillsFilter' && !filterElement.isHidden) {
                     this.$.locationFilter.set('isHidden', true);
-                    this.$.softwaresFilter.set('isHidden', true);
+                    this.$.softwareFilter.set('isHidden', true);
                 }
-                if (filterElement.id == 'softwaresFilter' && !filterElement.isHidden) {
+                if (filterElement.id == 'softwareFilter' && !filterElement.isHidden) {
                     this.$.locationFilter.set('isHidden', true);
                     this.$.skillsFilter.set('isHidden', true);
                 }
             }
         }
+        /**
+        * Open dialog for the clicked punanis
+        * @param {Event} e
+        */
         openDialog (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -761,18 +848,31 @@
             }
             return false;
         }
+        /**
+        * Calculates if an index is the last on an array
+        * @param {Number} index Index to check
+        * @param {Array} items Array to check if `index` is the last
+        * @return {Boolean} Whether `index` is the last index on `items` array
+        */
         lastItem (index, items) {
             return items.length-1 == index;
         }
-        lastSkill(index, items, extra) {
-            const skills = this.filterSkills(items, extra);
-            return skills.length-1 == index;
+        /**
+        * Filter skills and check if index is the last one
+        * @param {Number} index Index to check
+        * @param {Array} skills Array to check if `index` is the last
+        * @param {Boolean} extra Whether filter only extra skills
+        * @return {Boolean} Whether `index` is the last index on `skills` array
+        */
+        lastSkill(index, skills, extra) {
+            const filteredSkills = this.filterSkills(skills, extra);
+            return this.lastItem(index, filteredSkills);
         }
         /**
         * Filter skills array searching for elements that where the property
         * `extra` matches the argument `extra`.
         * @param {Array} skills Array of skills
-        * @param {Boolean} extra Whether filter only extra skills only
+        * @param {Boolean} extra Whether filter only extra skills
         * @return {Array} Array of skills that matches its `extra` property with
         *     the argument `extra`.
         */
@@ -783,22 +883,50 @@
                 });
             }
         }
+        /**
+        * Filter skills and check if the result is not empty
+        * @param {Array} skills Array of skills
+        * @param {Boolean} extra Whether filter only extra skills
+        */
         hasSkills (skills, extra) {
             const filteredSkills = this.filterSkills(skills, extra);
             return filteredSkills.length > 1;
         }
-        hasSoftwares (softwares) {
-            return softwares && softwares.length > 1;
+        /**
+        * Check if array of items is not empty
+        * @param {Array} items Array
+        * @return {Boolean} Whether array has items
+        */
+        hasItems (items) {
+            return items && items.length > 1;
         }
+
+        /**
+        * Handles change in the location dropdown
+        * @param {Event} e
+        */
         locationChanged (e) {
             this.set('locationFilter', e.detail.selected.slice(0));
         }
+        /**
+        * Handles change in the skills dropdown
+        * @param {Event} e
+        */
         skillsChanged (e) {
             this.set('skillsFilter', e.detail.selected.slice(0));
         }
+        /**
+        * Handles change in the softwares dropdown
+        * @param {Event} e
+        */
         softwaresChanged (e) {
-            this.set('softwaresFilter', e.detail.selected.slice(0));
+            this.set('softwareFilter', e.detail.selected.slice(0));
         }
+        /**
+        * Shuffle array
+        * @param {Array} array Array to shuffle
+        * @return {Array} Shuffled array
+        */
         shuffle(array) {
             let counter = array.length;
 
@@ -818,41 +946,80 @@
 
             return array;
         }
-        filterPunanis (punanis, locationFilter, skillsFilter, softwaresFilter) {
+        /**
+        * Filter punanis based on given array of filters and return a shuffled
+        * result
+        * @param {Array} punanis All available punanis
+        * @param {Array} locationFilter Currently selected location filters
+        * @param {Array} skillsFilter Currently selected skills filters
+        * @param {Array} softwareFilter Currently selected skills filters
+        * @return {Array} Filtered and shuffled punanis
+        */
+        filterPunanis (punanis, locationFilter, skillsFilter, softwareFilter) {
             if (
                 !locationFilter || !locationFilter.base
                 || !skillsFilter || !skillsFilter.base
-                || !softwaresFilter || !softwaresFilter.base
+                || !softwareFilter || !softwareFilter.base
                 || !punanis || !punanis.base
             ) {
                 return;
             }
-            // Changing any filter, reset pagination and scroll to top
+            // Changing any filter or punanis, reset pagination
             this.set('currentFeedPage', 0);
             const filteredPunanis = punanis.base.filter((punani) => {
-                // The check for "in" something is either has no filter or has
-                // a matching property with the selected filters
+                // `inLocation` should be true if it matches any of the filters
                 const inLocation = locationFilter.base.length == 0 || locationFilter.base.find((filter) => {
                     return filter.id == punani.location._id;
                 });
-                const inSkills = skillsFilter.base.length == 0 || punani.skills.find((punaniSkill) => {
-                    return skillsFilter.base.find((skill) => {
-                        return punaniSkill._id == skill.id;
+
+                // `inSkills` and `inSoftwares` should be true if it matches
+                // all the filters or has no filter
+                let inSkills = true;
+                if (skillsFilter.base.length != 0) {
+                    skillsFilter.base.forEach((skill) => {
+                        // Go through all the filters and if the punani doesn't
+                        // have one of them, it's out
+                        const isIn = punani.skills.find((punaniSkill) => {
+                            return punaniSkill._id === skill.id
+                        });
+                        if (!isIn) {
+                            inSkills = false;
+                        }
                     });
-                });
-                const inSoftwares = softwaresFilter.base.length == 0 || punani.softwares.find((punaniSoftwares) => {
-                    return softwaresFilter.base.find((softwares) => {
-                        return punaniSoftwares._id == softwares.id;
+                }
+                let inSoftwares = true;
+                if (softwareFilter.base.length != 0) {
+                    softwareFilter.base.forEach((software) => {
+                        // Go through all the filters and if the punani doesn't
+                        // have one of them, it's out
+                        const isIn = punani.softwares.find((punaniSoftware) => {
+                            return punaniSoftware._id === software.id
+                        });
+                        if (!isIn) {
+                            inSoftwares = false;
+                        }
                     });
-                });
+                }
+
                 return inLocation && inSkills && inSoftwares;
             });
             return this.shuffle(filteredPunanis);
         }
+        /**
+        * Triggered to load more punanis. This is triggered when scroll hits
+        * the bottom of the page
+        */
         loadMoreData () {
             this.set('currentFeedPage', this.currentFeedPage+1);
             this.$.ironScrollTheshold.clearTriggers();
         }
+        /**
+        * Calculate and array of punanis until the `currentFeedPage`
+        * @param {Array} filteredPunanis Array of punanis that match the current
+        *     filters
+        * @param {Numner} currentFeedPage Current feed page
+        * @return {Array} Array of punanis until the current feed page
+        */
         computePaginatedPunanis (filteredPunanis, currentFeedPage) {
             const lastIndex = currentFeedPage > 0 ? currentFeedPage * this.pageSize: this.pageSize;
             if (lastIndex > filteredPunanis.base.lenth) {
@@ -860,6 +1027,26 @@
             }
             return filteredPunanis.base.slice(0, lastIndex);
         }
+        /**
+        * Calculates if all the `filteredPunanis` are shown already as
+        * `paginatedPunanis`
+        * @param {Array} filteredPunanis Array of punanis that match the current
+        *     filters
+        * @param {Array} paginatedPunanis Array of punanis until the
+        *     `currentFeedPage`
+        */
+        computeAllPunanisLoaded(filteredPunanis, paginatedPunanis) {
+            if (
+                !filteredPunanis || !filteredPunanis.base
+                || !paginatedPunanis || !paginatedPunanis.base
+            ) {
+                return false
+            }
+            return filteredPunanis.base.length === paginatedPunanis.base.length
+        }
+        /**
+        * Navigate to 'feed' page
+        */
         renderFeed() {
             if (typeof ga != 'undefined') {
                 ga('send', {
@@ -873,6 +1060,9 @@
             this.$.drawerMenu.close();
             return false;
         }
+        /**
+        * Navigate to 'about' page
+        */
         renderAbout() {
             if (typeof ga != 'undefined') {
                 ga('send', {

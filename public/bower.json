@@ -14,7 +14,8 @@
     "paper-ripple": "PolymerElements/paper-ripple#^2.1.0",
     "paper-dialog": "^2.1.0",
     "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^2.0.0",
-    "iron-pages": "^2.1.0"
+    "iron-pages": "^2.1.0",
+    "paper-spinner": "PolymerElements/paper-spinner#^2.1.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
