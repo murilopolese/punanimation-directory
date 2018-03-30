@@ -39,6 +39,9 @@ Your application is already set up to be tested via [web-component-tester](https
 - router
 - remember filter
 - cache everything
+- Edit About on keystone
+- Edit header on keystone
+- Edit meta tags on keystone
 
 ## DONE:
 - keystone setup
