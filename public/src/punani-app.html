@@ -955,18 +955,29 @@
         * @param {Array} softwareFilter Currently selected skills filters
         * @return {Array} Filtered and shuffled punanis
         */
-        filterPunanis (punanis, locationFilter, skillsFilter, softwareFilter) {
+        filterPunanis (allPunanis, locationFilter, skillsFilter, softwareFilter) {
             if (
                 !locationFilter || !locationFilter.base
                 || !skillsFilter || !skillsFilter.base
                 || !softwareFilter || !softwareFilter.base
-                || !punanis || !punanis.base
+                || !allPunanis || !allPunanis.base
             ) {
                 return;
             }
+            // Prioritize who sent original material (default is https://i.imgur.com/Hc0Ok0V.jpg)
+            let allPunanisShuffled = this.shuffle(allPunanis);
+            let punanis = allPunanis.base.sort((a, b) => {
+                if (a.coverImage.indexOf('i.imgur.com/Hc0Ok0V') != -1) {
+                    return 1;
+                } else if (a.coverImage == b.coverImage) {
+                    return 0;
+                }
+                return -1;
+            })
+
             // Changing any filter or punanis, reset pagination
             this.set('currentFeedPage', 0);
-            const filteredPunanis = punanis.base.filter((punani) => {
+            const filteredPunanis = punanis.filter((punani) => {
                 // `inLocation` should be true if it matches any of the filters
                 const inLocation = locationFilter.base.length == 0 || locationFilter.base.find((filter) => {
                     return filter.id == punani.location._id;
@@ -1003,7 +1014,7 @@
 
                 return inLocation && inSkills && inSoftwares;
             });
-            return this.shuffle(filteredPunanis);
+            return filteredPunanis;
         }
         /**
         * Triggered to load more punanis. This is triggered when scroll hits
