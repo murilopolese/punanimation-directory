@@ -965,8 +965,8 @@
                 return;
             }
             // Prioritize who sent original material (default is https://i.imgur.com/Hc0Ok0V.jpg)
-            let allPunanisShuffled = this.shuffle(allPunanis);
-            let punanis = allPunanis.base.sort((a, b) => {
+            let allPunanisShuffled = this.shuffle(allPunanis.base);
+            let punanis = allPunanisShuffled.sort((a, b) => {
                 if (a.coverImage.indexOf('i.imgur.com/Hc0Ok0V') != -1) {
                     return 1;
                 } else if (a.coverImage == b.coverImage) {
