@@ -12,6 +12,8 @@
 <link rel="import" href="./punani-fab.html">
 <link rel="import" href="./punani-filter.html">
 
+<script type="text/javascript" src="../../bower_components/nedb/browser-version/out/nedb.min.js"></script>
+
 <dom-module id="punani-app">
     <template>
         <style is="custom-style">
@@ -725,6 +727,41 @@
             window.addEventListener('tap', this.hideOptions.bind(this), false);
             // window.addEventListener('scroll', this.hideOptions.bind(this), false);
 
+            window.db = {
+                locations: new Nedb({
+                    filename: 'locations',
+                    autoload: true
+                }),
+                skills: new Nedb({
+                    filename: 'skills',
+                    autoload: true
+                }),
+                softwares: new Nedb({
+                    filename: 'softwares',
+                    autoload: true
+                }),
+                entries: new Nedb({
+                    filename: 'entries',
+                    autoload: true
+                })
+            };
+
+            db.locations.find({}, (err, docs) => {
+                this.set('locations', docs)
+            });
+            db.skills.find({}, (err, docs) => {
+                this.set('skills', docs)
+            });
+            db.softwares.find({}, (err, docs) => {
+                this.set('softwares', docs)
+            });
+            db.entries.find({}, (err, docs) => {
+                this.set('punanis', docs)
+            });
+
+            // this.fetchNewInfo();
+        }
+        fetchNewInfo() {
             // Load all available locations to filter
             fetch('/api/locations')
                 .then(r => r.json())
@@ -743,6 +780,7 @@
                             if (a.city > b.city) return 1;
                             return 0;
                         });
+                        db.locations.insert(locations);
                         this.set('locations', locations);
                     }
                 });
@@ -758,6 +796,7 @@
                                 extra: `${skill.extra}`
                             };
                         });
+                        db.skills.insert(skills);
                         this.set('skills', skills);
                     }
                 });
@@ -772,6 +811,7 @@
                                 name: `${skill.name}`
                             };
                         });
+                        db.softwares.insert(softwares);
                         this.set('softwares', softwares);
                     }
                 });
@@ -780,6 +820,7 @@
                 .then(r => r.json())
                 .then((response) => {
                     if (response.entries) {
+                        db.entries.insert(response.entries);
                         this.set('punanis', response.entries);
                     }
                 });
