@@ -19,17 +19,17 @@ exports = module.exports = function (app) {
 	// REST API
 	restful.expose({
 		Entry: {
-	    	methods: ["retrieve", "list"],
+			methods: ["retrieve", "list"],
 			populate: ['location', 'skills', 'softwares']
-	    },
+		},
 		Location: {
-	    	methods: ["retrieve", "list"]
-	    },
+			methods: ["retrieve", "list"]
+		},
 		Skill: {
-	    	methods: ["retrieve", "list"]
-	    },
+			methods: ["retrieve", "list"]
+		},
 		Software: {
-	    	methods: ["retrieve", "list"]
-	    }
+			methods: ["retrieve", "list"]
+		}
 	}).start();
 };
