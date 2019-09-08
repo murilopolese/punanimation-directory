@@ -4,25 +4,13 @@ require('dotenv').config();
 
 // Require keystone
 var keystone = require('keystone');
-var handlebars = require('express-handlebars');
 
 keystone.init({
-	'name': 'punanimation',
-	'brand': 'punanimation',
+	'name': 'panimation',
+	'brand': 'panimation',
 
-	'less': 'public',
-	'static': 'public',
-	'favicon': 'public/favicon.ico',
-	'views': 'templates/views',
-	'view engine': '.hbs',
-
-	'custom engine': handlebars.create({
-		layoutsDir: 'templates/views/layouts',
-		partialsDir: 'templates/views/partials',
-		defaultLayout: 'default',
-		// helpers: new require('./templates/views/helpers')(),
-		extname: '.hbs',
-	}).engine,
+	'static': 'public/build',
+	'favicon': 'public/build/favicon0.ico',
 
 	'auto update': true,
 	'session': true,
@@ -37,11 +25,5 @@ keystone.set('locals', {
 	editable: keystone.content.editable,
 });
 keystone.set('routes', require('./routes'));
-
-// keystone.set('nav', {
-// 	users: 'users',
-// });
-
-
 
 keystone.start();

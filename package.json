@@ -4,18 +4,23 @@
   "private": true,
   "dependencies": {
     "dotenv": "4.0.0",
-    "express-handlebars": "3.0.0",
-    "handlebars": "4.0.6",
     "keystone": "4.0.0-beta.5",
     "lodash": "^4.13.1",
     "moment": "2.19.3",
     "restful-keystone": "^0.3.0"
   },
   "devDependencies": {
-		"cloudinary": "^1.7.0",
-    "eslint": "3.15.0",
+    "cloudinary": "^1.7.0",
+    "eslint": "^5.16.0",
     "eslint-config-keystone": "3.0.0",
-    "eslint-plugin-react": "^5.1.1"
+    "eslint-plugin-react": "^5.1.1",
+    "@material-ui/core": "^4.3.2",
+    "@material-ui/icons": "^4.2.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.1.1",
+    "react-scripts": "3.0.1",
+    "redux": "^4.0.4"
   },
   "scripts": {
     "lint": "eslint .",

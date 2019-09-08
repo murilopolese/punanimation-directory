@@ -1,0 +1,29 @@
+.navigation {
+	display: flex;
+}
+
+.nav-item {
+	margin-right: 20px;
+}
+
+.nav-item a:link,
+.nav-item a:hover,
+.nav-item a:active,
+.nav-item a:visited {
+	font-weight: inherit;
+}
+
+.navigation-mobile {
+	display: flex;
+	flex-direction: column;
+}
+
+.navigation-mobile .nav-item {
+	margin-right: auto;
+	padding: 7px 0;
+	cursor: pointer;
+	background: #FFFFFF;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
