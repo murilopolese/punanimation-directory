@@ -1,6 +1,6 @@
 import React from 'react'
 
-let cpos
+let cpos = 0
 
 class Header extends React.Component {
 	constructor(props) {
@@ -18,6 +18,9 @@ class Header extends React.Component {
 	}
 	drawHeader() {
 		const pos = window.pageYOffset
+		if (pos === cpos) {
+			return false
+		}
 		const containerHeight = this.container.current.clientHeight
 		const headHeight = this.head.current.clientHeight
 		const containerStyle = this.container.current.style
@@ -26,8 +29,6 @@ class Header extends React.Component {
 		const scrollingUp = pos < cpos
 		const hidden = containerStyle.position === 'fixed'
 				&& containerStyle.top === `${-containerHeight}px`
-		const sticky = containerStyle.position === 'fixed'
-				&& containerStyle.top === `${-headHeight}px`
 		const regular = containerStyle.position === 'relative'
 				&& containerStyle.top === 0
 
@@ -50,14 +51,12 @@ class Header extends React.Component {
 			containerStyle.top = `0px`
 			spacingStyle.height = `0px`
 		}
+
 		cpos = pos
 	}
 
 	loop() {
-		const pos = window.pageYOffset
-		if (pos !== this.state.pos) {
-			this.drawHeader()
-		}
+		this.drawHeader()
 		if (this.state.mounted) {
 			window.requestAnimationFrame(this.loop.bind(this))
 		}

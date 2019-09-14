@@ -4,6 +4,10 @@ const handleHttpError = (res) => {
 	return res
 }
 
+const getBaseUrl = () => {
+	return localStorage.getItem('API_URL') || window.location.origin
+}
+
 // ENTRIES
 const FETCH_ENTRIES_BEGIN = 'FETCH_ENTRIES_BEGIN'
 const FETCH_ENTRIES_SUCCESS = 'FETCH_ENTRIES_SUCCESS'
@@ -60,7 +64,7 @@ const shuffle = (array) => {
 }
 export const loadEntries = (dispatch) => {
 	dispatch({ type: FETCH_ENTRIES_BEGIN })
-	fetch('/entries.json')
+	fetch(`${getBaseUrl()}/api/entries`, { mode: 'cors' })
 		.then(handleHttpError)
 		.then(r => r.json())
 		.then((json) => {
@@ -133,7 +137,7 @@ const locationsReducer = (state = initialLocations, action) => {
 }
 export const loadLocations = (dispatch) => {
 	dispatch({ type: FETCH_LOCATIONS_BEGIN })
-	fetch('/locations.json')
+	fetch(`${getBaseUrl()}/api/locations`, { mode: 'cors' })
 		.then(handleHttpError)
 		.then(r => r.json())
 		.then((json) => {
@@ -213,7 +217,7 @@ const skillsReducer = (state = initialSkills, action) => {
 }
 export const loadSkills = (dispatch) => {
 	dispatch({ type: FETCH_SKILLS_BEGIN })
-	fetch('/skills.json')
+	fetch(`${getBaseUrl()}/api/skills`, { mode: 'cors' })
 		.then(handleHttpError)
 		.then(r => r.json())
 		.then((json) => {
@@ -293,7 +297,7 @@ const softwaresReducer = (state = initialSoftwares, action) => {
 }
 export const loadSoftwares = (dispatch) => {
 	dispatch({ type: FETCH_SOFTWARES_BEGIN })
-	fetch('/softwares.json')
+	fetch(`${getBaseUrl()}/api/softwares`, { mode: 'cors' })
 		.then(handleHttpError)
 		.then(r => r.json())
 		.then((json) => {

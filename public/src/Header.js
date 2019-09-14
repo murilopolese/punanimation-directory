@@ -62,7 +62,8 @@ class PaniHeader extends React.Component {
 			routeTo
 		} = this.props
 		let linkStyle = {
-			fontWeight: 'inherit'
+			fontWeight: 'inherit',
+			cursor: 'pointer'
 		}
 		return (
 			<div style={{position: 'absolute', top: 20, left: 0}}>
@@ -70,8 +71,8 @@ class PaniHeader extends React.Component {
 					<Box component="span" marginRight={2}>
 						<Text uppercase weight="semi-bold">
 							<a
+								href="/#about"
 								style={linkStyle}
-								href="#"
 								onClick={() => routeTo('about')}>
 								About
 							</a>
@@ -218,12 +219,13 @@ class PaniHeader extends React.Component {
 					</div>
 					<div style={logoStyle} onClick={() => routeTo('home')}>
 						<Box m={1}>
-							<img
-								style={{cursor: 'pointer'}}
-								alt="Panimation Logo"
-								width="130"
-								height="85"
-								src={logo} />
+							<a href="/#">
+								<img
+									alt="Panimation Logo"
+									width="130"
+									height="85"
+									src={logo} />
+							</a>
 						</Box>
 						<Text>
 							A directory of women, trans and non-binary friends working with
