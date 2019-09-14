@@ -78,8 +78,8 @@ const filterEntries = (state) => {
 
 	// Put entries with cover image first
 	entries = [
-		...entries.filter((entry) => entry.coverImage !== 'https://i.imgur.com/Hc0Ok0V.jpg'),
-		...entries.filter((entry) => entry.coverImage === 'https://i.imgur.com/Hc0Ok0V.jpg')
+		...entries.filter((entry) => !!entry.thumbnail),
+		...entries.filter((entry) => !entry.thumbnail)
 	]
 
 	return entries
