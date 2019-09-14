@@ -1,12 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Container, Grid, Box } from '@material-ui/core';
+import { Container, Grid, Box, CircularProgress } from '@material-ui/core';
 import Thumbnail from './components/Thumbnail'
 import { openCard, nextPage } from './store'
 
 class Feed extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = { interval: 0 }
+	}
 	listenToScroll(e) {
-		if (window.pageYOffset > document.body.clientHeight - window.screen.height) {
+		if (
+			!this.isDoneLoading() &&
+			window.pageYOffset + 100 > document.body.clientHeight - window.screen.height
+		) {
 			this.props.nextPage()
 		}
 	}
@@ -15,6 +22,9 @@ class Feed extends React.Component {
 	}
 	componentWillUnmount() {
 		window.removeEventListener('scroll', this.listenToScroll.bind(this))
+	}
+	isDoneLoading() {
+		return this.props.entries.length < this.props.displaySize
 	}
 	renderFeed() {
 		let { entries, displaySize, openCard } = this.props
@@ -27,14 +37,31 @@ class Feed extends React.Component {
 		})
 	}
 	renderLoading() {
-		return (<Container>Loading</Container>)
+		return (
+			<Container maxWidth="sm">
+				<Grid
+					container
+					justify="center"
+					alignItems="center"
+					style={{height: 'calc(100vh - 300px'}}
+					>
+					<Grid item>
+						{
+							!this.isDoneLoading() || this.props.loading
+							? <CircularProgress style={{color: '#FCC438'}} />
+							: false
+						}
+					</Grid>
+				</Grid>
+			</Container>)
 	}
 	render() {
 		return (
 			<Box marginTop={2}>
 			<Container maxWidth="md">
 				<Grid container spacing={4}>
-					{this.props.loading ? this.renderLoading() : this.renderFeed()}
+				{this.renderFeed()}
+				{this.renderLoading()}
 				</Grid>
 			</Container>
 			</Box>

@@ -10,12 +10,14 @@ const getBaseUrl = () => {
 
 // ENTRIES
 const FETCH_ENTRIES_BEGIN = 'FETCH_ENTRIES_BEGIN'
+const FETCH_ENTRIES_END = 'FETCH_ENTRIES_END'
 const FETCH_ENTRIES_SUCCESS = 'FETCH_ENTRIES_SUCCESS'
 const FETCH_ENTRIES_FAIL = 'FETCH_ENTRIES_FAIL'
 const SELECT_ENTRY = 'SELECT_ENTRY'
 const SHOW_ENTRY_DIALOG = 'SHOW_ENTRY_DIALOG'
 const HIDE_ENTRY_DIALOG = 'HIDE_ENTRY_DIALOG'
 const NEXT_ENTRY_PAGE = 'NEXT_ENTRY_PAGE'
+const RESET_ENTRY_PAGE = 'RESET_ENTRY_PAGE'
 const initialEntries = {
 	selected: null,
 	entries: [],
@@ -29,14 +31,16 @@ const entriesReducer = (state = initialEntries, action) => {
 	switch (action.type) {
 		case FETCH_ENTRIES_BEGIN:
 			return { ...state, loading: true }
+		case FETCH_ENTRIES_END:
+			return { ...state, loading: false }
 		case FETCH_ENTRIES_SUCCESS:
 			let entriesById = action.payload.reduce((acc, entry) => {
 				acc[entry._id] = entry
 				return acc
 			}, {})
-			return { ...state, loading: false, entries: action.payload, entriesById }
+			return { ...state, entries: action.payload, entriesById }
 		case FETCH_ENTRIES_FAIL:
-			return { ...state, loading: false }
+			return { ...state }
 		case SELECT_ENTRY:
 			return { ...state, selected: action.payload }
 		case SHOW_ENTRY_DIALOG:
@@ -45,6 +49,8 @@ const entriesReducer = (state = initialEntries, action) => {
 			return { ...state, cardOpen: false }
 		case NEXT_ENTRY_PAGE:
 			return { ...state, currentPage: state.currentPage+1 }
+		case RESET_ENTRY_PAGE:
+			return { ...state, currentPage: 1 }
 		default:
 			return state
 	}
@@ -69,11 +75,17 @@ export const loadEntries = (dispatch) => {
 		.then(r => r.json())
 		.then((json) => {
 			dispatch({
+				type: FETCH_ENTRIES_END
+			})
+			dispatch({
 				type: FETCH_ENTRIES_SUCCESS,
 				payload: shuffle( json.entries )
 			})
 		})
 		.catch((error) => {
+			dispatch({
+				type: FETCH_ENTRIES_END
+			})
 			dispatch({
 				type: FETCH_ENTRIES_FAIL,
 				payload: error
@@ -89,6 +101,10 @@ export const closeCard = (dispatch, id) => {
 }
 export const nextPage = (dispatch) => {
 	dispatch({ type: NEXT_ENTRY_PAGE })
+}
+export const resetPage = (dispatch) => {
+	console.log('reset pages')
+	dispatch({ type: RESET_ENTRY_PAGE })
 }
 
 // LOCATION
@@ -168,6 +184,7 @@ export const searchLocations = (dispatch, searchTerm) => {
 	dispatch({ type: SET_FILTER_LOCATIONS, payload: searchTerm })
 }
 export const toggleLocations = (dispatch, id) => {
+	resetPage(dispatch)
 	dispatch({ type: TOGGLE_LOCATIONS, payload: id })
 }
 
@@ -248,6 +265,7 @@ export const searchSkills = (dispatch, searchTerm) => {
 	dispatch({ type: SET_FILTER_SKILLS, payload: searchTerm })
 }
 export const toggleSkills = (dispatch, id) => {
+	resetPage(dispatch)
 	dispatch({ type: TOGGLE_SKILLS, payload: id })
 }
 
@@ -328,6 +346,7 @@ export const searchSoftwares = (dispatch, searchTerm) => {
 	dispatch({ type: SET_FILTER_SOFTWARES, payload: searchTerm })
 }
 export const toggleSoftwares = (dispatch, id) => {
+	resetPage(dispatch)
 	dispatch({ type: TOGGLE_SOFTWARES, payload: id })
 }
 
