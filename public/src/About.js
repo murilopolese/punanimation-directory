@@ -50,9 +50,9 @@ export default (props) => {
 						</Text>
 						<Text size="medium" weight="semi-bold">
 							<Link
-								href="mailto:hey@panimation.com"
+								href="mailto:hey@panimation.tv"
 								letterSpacing="narrow">
-								hey@panimation.com
+								hey@panimation.tv
 							</Link>
 						</Text>
 						<Text>
@@ -62,9 +62,9 @@ export default (props) => {
 						</Text>
 						<Text size="medium" weight="semi-bold">
 							<Link
-								href="mailto:directory@panimation.com"
+								href="mailto:directory@panimation.tv"
 								letterSpacing="narrow">
-								directory@panimation.com
+								directory@panimation.tv
 							</Link>
 						</Text>
 						<Text>
@@ -74,9 +74,9 @@ export default (props) => {
 						</Text>
 						<Text size="medium" weight="semi-bold">
 							<Link
-								href="mailto:instagram@panimation.com"
+								href="mailto:instagram@panimation.tv"
 								letterSpacing="narrow">
-								instagram@panimation.com
+								instagram@panimation.tv
 							</Link>
 						</Text>
 						<Text>
