@@ -1,22 +1,12 @@
 import React from 'react'
 import Text from './Text.js'
 import './Thumbnail.css'
-import cloudinary from 'cloudinary-core';
 import defaultThumb from '../assets/default.jpg'
 
-var cl = new cloudinary.Cloudinary({
-	cloud_name: 'hzbx4zqtw',
-	secure: true
-});
-
 const getThumbnailUrl = function(entry) {
-	const thumbnail = entry.thumbnail
+	const thumbnail = entry.coverImage
 	if (thumbnail) {
-		const imageName = `${thumbnail.public_id}.${thumbnail.format}`
-		return cl.url(imageName, {
-				transformation: [ { width: 277, height: 198, crop: "fill" } ]
-			}
-		)
+		return thumbnail
 	} else {
 		return defaultThumb
 	}

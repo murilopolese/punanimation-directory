@@ -103,10 +103,11 @@ const filterEntries = (state) => {
 		})
 	}
 
+	const placeholderImage = 'https://i.imgur.com/Hc0Ok0V.jpg'
 	// Put entries with cover image first
 	entries = [
-		...entries.filter((entry) => !!entry.thumbnail),
-		...entries.filter((entry) => !entry.thumbnail)
+		...entries.filter((entry) => entry.coverImage && entry.coverImage != placeholderImage),
+		...entries.filter((entry) => !entry.coverImage || entry.coverImage == placeholderImage)
 	]
 
 	return entries
