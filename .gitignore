@@ -33,3 +33,5 @@ node_modules
 scripts/dump/*
 scripts/images/original/*
 scripts/images/uploaded/*
+
+public/.cache

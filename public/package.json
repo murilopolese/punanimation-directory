@@ -5,6 +5,7 @@
   "scripts": {
     "start": "../node_modules/.bin/react-scripts start",
     "build": "../node_modules/.bin/react-scripts build",
+    "deploy": "./update.sh",
     "test": "../node_modules/.bin/react-scripts test",
     "eject": "../node_modules/.bin/react-scripts eject",
     "storybook": "../node_modules/.bin/start-storybook -p 9009 -s public",

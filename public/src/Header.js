@@ -90,6 +90,18 @@ class PaniHeader extends React.Component {
 							</a>
 						</Text>
 					</Box>
+					<Box component="span" marginRight={2}>
+						<Text uppercase weight="semi-bold">
+							<a
+								style={linkStyle}
+								href="https://www.patreon.com/panimation"
+								target="_blank"
+								rel="noopener noreferrer"
+								>
+								Support
+							</a>
+						</Text>
+					</Box>
 				</Hidden>
 				<Hidden mdUp>
 					<IconButton onClick={showDrawerMenu} aria-label="menu">
