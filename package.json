@@ -5,7 +5,7 @@
   "dependencies": {
     "cloudinary-core": "^2.7.4",
     "dotenv": "4.0.0",
-    "keystone": "4.0.0-beta.5",
+    "keystone": "4.2.1",
     "lodash": "^4.13.1",
     "moment": "2.19.3",
     "restful-keystone": "^0.3.0"
@@ -20,7 +20,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "redux": "^4.0.4"
   },
   "scripts": {
