@@ -30,7 +30,7 @@ function mainView(state, emit) {
             <div class="icon">
               <img src="media/arrowdown.svg" alt="arrow down" />
             </div>
-            <div class="drawer">
+            <div class="drawer closed">
               <div class="search">
                 <input type="text" />
                 <img src="media/search.svg" alt="search" />
@@ -106,9 +106,69 @@ function mainView(state, emit) {
         </div>
       </div>
       <div id="container">
-
+        <div class="item">
+          <a href="#">
+            <img src="media/thumbnail.png" />
+            <span class="name">
+              <span class="fullname">Full Name da Silva</span>
+              <span class="location">(Cidade, XX)</span>
+            </span>
+          </a>
+        </div>
+        <div class="item">
+          <a href="#">
+            <img src="media/thumbnail.png" />
+            <span class="name">
+              <span class="fullname">Full Name da Silva</span>
+              <span class="location">(Cidade, XX)</span>
+            </span>
+          </a>
+        </div>
+        <div class="item">
+          <a href="#">
+            <img src="media/thumbnail.png" />
+            <span class="name">
+              <span class="fullname">Full Name da Silva</span>
+              <span class="location">(Cidade, XX)</span>
+            </span>
+          </a>
+        </div>
+        <div class="item">
+          <a href="#">
+            <img src="media/thumbnail.png" />
+            <span class="name">
+              <span class="fullname">Full Name da Silva</span>
+              <span class="location">(Cidade, XX)</span>
+            </span>
+          </a>
+        </div>
+        <div class="item">
+          <a href="#">
+            <img src="media/thumbnail.png" />
+            <span class="name">
+              <span class="fullname">Full Name da Silva</span>
+              <span class="location">(Cidade, XX)</span>
+            </span>
+          </a>
+        </div>
       </div>
-      <div id="modal"></div>
+      <div id="modal">
+        <div id="dialog">
+          <div class="link"><a href="#"><img src="media/link.svg" /></a></div>
+          <div class="row">
+            <span class="title">Fullname da Silva</span>
+            <span class="body">Cidade, XX</span>
+          </div>
+          <div class="row">
+            <span class="title">Skills</span>
+            <span class="body">2D Animation, Editing, Illustration, Graphic Design, Live Action, Stop Motion Animation, Art Direction, Motion Graphics, Cel Animation, Typography / Lettering, Storyboard Artist, Mentorship / Coaching</span>
+          </div>
+          <div class="row">
+            <span class="title">Software</span>
+            <span class="body">Photoshop, Dragonframe, Illustrator, After Effects, Premiere</span>
+          </div>
+        </div>
+      </div>
     </body>
   `
 }

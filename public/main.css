@@ -14,6 +14,10 @@ body {
   align-items: center;
 }
 
+img {
+  max-width: 100%;
+}
+
 a:link,
 a:visited,
 a:hover,
@@ -67,7 +71,8 @@ a:active {
   align-items: center;
   justify-content: center;
   padding-bottom: 25px;
-  gap: 8px;
+  gap: 11px;
+  margin-top: -5px;
 }
 
 #header .logo .sub-header {
@@ -89,7 +94,7 @@ a:active {
 #header .filters .filter {
   position: relative;
   width: 100%;
-  height: 30px;
+  height: 32px;
   border: solid 1px var(--black);
   padding: 0 10px;
   display: flex;
@@ -191,4 +196,99 @@ a:active {
 
 #header .filters .filter .drawer .list .item.selected {
   background: var(--yellow);
+}
+
+#container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 960px;
+  padding: 0 16px;
+}
+
+#container .item {
+  width: calc(100% / 3);
+  padding: 16px;
+}
+
+#container .item a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#container .item img {
+  max-width: 100%;
+  height: 198px;
+  object-fit: cover;
+  border: solid 1px var(--black);
+}
+
+#container .item .name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 0;
+  gap: 5px;
+}
+
+#container .item .name .fullname {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+#container .item .name .location {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.3px;
+}
+
+#modal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#dialog {
+  position: relative;
+  width: 444px;
+  background: var(--yellow);
+  border-radius: 4px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 11px 15px -7px, rgba(0, 0, 0, 0.14) 0px 24px 38px 3px, rgba(0, 0, 0, 0.12) 0px 9px 46px 8px;
+}
+#dialog .link {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+#dialog .row {
+  display: flex;
+  flex-direction: column;
+}
+
+#dialog .title {
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+#dialog .body {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.84px;
 }
