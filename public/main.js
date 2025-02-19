@@ -9,20 +9,25 @@ function mainView(state, emit) {
     <body>
       <div id="header">
         <div class="menu">
-          <nav class="pages">
+          <div class="pages">
             <a href="#about">About</a>
             <a href="#" target="_blank">Join</a>
             <a href="#" target="_blank">Support</a>
-          </nav>
-          <nav class="social-media">
+          </div>
+          <div class="social-media">
             <a href="#"><img src="media/facebook.svg" alt="Facebook" /></a>
             <a href="#"><img src="media/vimeo.svg" alt="Vimeo" /></a>
             <a href="#"><img src="media/instagram.svg" alt="Instagram" /></a>
-          </nav>
+          </div>
         </div>
         <div class="logo">
-          <img src="media/newlogo.svg" alt="Panimation" />
-          <div class="sub-header">A directory of women, trans and non-binary friends working with animation and motion graphics.</div>
+          <a href="/">
+            <img src="media/newlogo.svg" alt="Panimation logo" />
+          </a>
+          <div class="sub-header">
+            A directory of women, trans and non-binary friends working with
+            animation and motion graphics.
+          </div>
         </div>
         <div class="filters">
           <div class="filter selected">
@@ -152,7 +157,7 @@ function mainView(state, emit) {
           </a>
         </div>
       </div>
-      <div id="modal">
+      <div id="modal" class="open">
         <div id="dialog">
           <div class="link"><a href="#"><img src="media/link.svg" /></a></div>
           <div class="row">
