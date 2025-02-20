@@ -1,3 +1,5 @@
+import { filters } from './filters.js'
+
 export function header(state, emit) {
   return html`
     <div id="header">
@@ -22,86 +24,7 @@ export function header(state, emit) {
           animation and motion graphics.
         </div>
       </div>
-      <div class="filters">
-        <div class="filter selected">
-          <div class="label">Label</div>
-          <div class="icon">
-            <img src="media/arrowdown.svg" alt="arrow down" />
-          </div>
-          <div class="drawer closed">
-            <div class="search">
-              <input type="text" />
-              <img src="media/search.svg" alt="search" />
-            </div>
-            <div class="list">
-              <div class="item-header">Header Item</div>
-              <div class="item selected">Selected Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item-header">Header Item</div>
-              <div class="item selected">Selected Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-            </div>
-          </div>
-        </div>
-        <div class="filter">
-          <div class="label">Label</div>
-          <div class="icon">
-            <img src="media/arrowdown.svg" alt="arrow down" />
-          </div>
-          <div class="drawer closed">
-            <div class="search">
-              <input type="text" />
-              <img src="media/search.svg" alt="search" />
-            </div>
-            <div class="list">
-              <div class="item-header">Header Item</div>
-              <div class="item selected">Selected Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item-header">Header Item</div>
-              <div class="item selected">Selected Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-            </div>
-          </div>
-        </div>
-        <div class="filter">
-          <div class="label">Label</div>
-          <div class="icon">
-            <img src="media/arrowdown.svg" alt="arrow down" />
-          </div>
-          <div class="drawer closed">
-            <div class="search">
-              <input type="text" />
-              <img src="media/search.svg" alt="search" />
-            </div>
-            <div class="list">
-              <div class="item-header">Header Item</div>
-              <div class="item selected">Selected Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item-header">Header Item</div>
-              <div class="item selected">Selected Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-              <div class="item">Regular Item</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      ${filters(state, emit)}
     </div>
   `
 }
