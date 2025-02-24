@@ -1,5 +1,9 @@
 import { countries } from './data/countries.js'
 
+const normalize = (str) => {
+	return str.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase()
+}
+
 export function events(state, emitter) {
   console.log('store')
   state.isModalOpen = false
@@ -12,9 +16,12 @@ export function events(state, emitter) {
   state.softwares = []
   state.selectedSoftwares = []
   state.isLocationOpen = false
-  state.locationFilter = ''
   state.filteredLocations = []
-  state.isSkill
+  state.isSkillsOpen = false
+  state.filteredSkills = []
+  state.isSoftwaresOpen = false
+  state.filteredSoftwares = []
+
 
   fetch('data/entries.json')
     .then(r => r.json())
@@ -35,7 +42,7 @@ export function events(state, emitter) {
         }
         return acc
       }, {})
-      emitter.emit('render')
+      emitter.emit('change-location-filter', '')
     })
   fetch('data/skills.json')
     .then(r => r.json())
@@ -68,6 +75,7 @@ export function events(state, emitter) {
   })
 
   emitter.on('select-location', (city) => {
+    console.log('select-location')
     if (state.selectedLocations.indexOf(city) == -1) {
       state.selectedLocations.push(city)
     }
@@ -128,6 +136,23 @@ export function events(state, emitter) {
     state.isLocationOpen = false
     state.isSkillsOpen = false
     state.isSoftwaresOpen = false
+    emitter.emit('render')
+  })
+
+  emitter.on('change-location-filter', (value) => {
+    if (!value) {
+      state.filteredLocations = state.locations
+      state.locationFilterTerm = ''
+    } else {
+      state.locationFilterTerm = value
+      state.filteredLocations = Object.keys(state.locations).sort().reduce((acc, country) => {
+        const filteredCitites = state.locations[country].filter(
+          (city) => normalize(city).toLowerCase().indexOf(normalize(value).toLowerCase()) != -1
+        )
+        acc[country] = filteredCitites
+        return acc
+      }, {})
+    }
     emitter.emit('render')
   })
 }

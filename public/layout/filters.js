@@ -1,3 +1,33 @@
+function locationFilter(state, emit) {
+  const countries = Object.keys(state.filteredLocations).sort()
+  function itemHeader(country) {
+    return html`<div class="item-header">${country}</div>`
+  }
+  const item = (country) => {
+    const cities = state.filteredLocations[country]
+    if (cities.length == 0) return
+    return html `
+      <div class="item-header">${country}</div>
+      ${cities.map((city) => {
+        if (state.selectedLocations.indexOf(city) != -1) {
+          return html`
+            <div class="item selected" onclick=${() => emit('deselect-location', city)}>${city}</div>
+          `
+        } else {
+          return html`
+            <div class="item" onclick=${() => emit('select-location', city)}>${city}</div>
+          `
+        }
+      })}
+    `
+  }
+  return html`
+    <div class="list">
+      ${countries.map(item)}
+    </div>
+  `
+}
+
 export function filters(state, emit) {
   const locationSelectedClass = state.selectedLocations.length > 0 ? 'selected' : ''
   const locationOpenClass = state.isLocationOpen ? 'open' : 'closed'
@@ -5,6 +35,7 @@ export function filters(state, emit) {
   const skillsOpenClass = state.isSkillsOpen ? 'open' : 'closed'
   const softwaresSelectedClass = state.selectedSoftwares.length > 0 ? 'selected' : ''
   const softwaresOpenClass = state.isSoftwaresOpen ? 'open' : 'closed'
+
   return html`
     <div class="filters">
       <div class="filter ${locationSelectedClass}">
@@ -14,30 +45,10 @@ export function filters(state, emit) {
         </div>
         <div class="drawer ${locationOpenClass}">
           <div class="search">
-            <input type="text" onkeydown=${(e) => console.log(e)} />
+            <input type="text" value=${state.locationFilterTerm} onkeyup=${(e) => emit('change-location-filter', e.target.value)} />
             <img src="media/search.svg" alt="search" />
           </div>
-          <div class="list">
-            ${
-              Object.keys(state.locations).sort().map((country) => {
-                const cities = state.locations[country]
-                return html`
-                  <div class="item-header">${country}</div>
-                  ${cities.map((city) => {
-                    if (state.selectedLocations.indexOf(city) != -1) {
-                      return html`
-                        <div class="item selected" onclick=${() => emit('deselect-location', city)}>${city}</div>
-                      `
-                    } else {
-                      return html`
-                        <div class="item" onclick=${() => emit('select-location', city)}>${city}</div>
-                      `
-                    }
-                  })}
-                `
-              })
-            }
-          </div>
+          ${locationFilter(state, emit)}
         </div>
       </div>
       <div class="filter ${skillsSelectedClass}">

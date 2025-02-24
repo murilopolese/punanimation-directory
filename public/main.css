@@ -359,8 +359,7 @@ a:active {
 /* DESKTOP */
 @media (min-width: 960px) {
   #header .filters {
-    width: 100%;
-    max-width: 960px;
+    width: 960px;
     padding: 16px 32px;
     flex-direction: row;
     gap: 32px;
