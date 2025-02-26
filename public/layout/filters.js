@@ -1,15 +1,15 @@
 function locationFilter(state, emit) {
-  const countries = Object.keys(state.filteredLocations).sort()
+  const countries = Object.keys(state.locations.filtered).sort()
   function itemHeader(country) {
     return html`<div class="item-header">${country}</div>`
   }
-  const item = (country) => {
-    const cities = state.filteredLocations[country]
+  function item(country) {
+    const cities = state.locations.filtered[country]
     if (cities.length == 0) return
     return html `
       <div class="item-header">${country}</div>
       ${cities.map((city) => {
-        if (state.selectedLocations.indexOf(city) != -1) {
+        if (state.locations.selected.indexOf(city) != -1) {
           return html`
             <div class="item selected" onclick=${() => emit('deselect-location', city)}>${city}</div>
           `
@@ -27,14 +27,51 @@ function locationFilter(state, emit) {
     </div>
   `
 }
+function skillsFilter(state, emit) {
+  function item(value) {
+    if (state.skills.selected.indexOf(value) != -1) {
+      return html`
+        <div class="item selected" onclick=${() => emit('deselect-skill', value)}>${value}</div>
+      `
+    } else {
+      return html`
+        <div class="item" onclick=${() => emit('select-skill', value)}>${value}</div>
+      `
+    }
+  }
+  return html`
+    <div class="list">
+      ${state.skills.filtered.sort().map(item)}
+    </div>
+  `
+}
+function softwaresFilter(state, emit) {
+  function item(value) {
+    // const value = a.name
+    if (state.softwares.selected.indexOf(value) != -1) {
+      return html`
+        <div class="item selected" onclick=${() => emit('deselect-software', value)}>${value}</div>
+      `
+    } else {
+      return html`
+        <div class="item" onclick=${() => emit('select-software', value)}>${value}</div>
+      `
+    }
+  }
+  return html`
+    <div class="list">
+      ${state.softwares.filtered.sort().map(item)}
+    </div>
+  `
+}
 
 export function filters(state, emit) {
-  const locationSelectedClass = state.selectedLocations.length > 0 ? 'selected' : ''
-  const locationOpenClass = state.isLocationOpen ? 'open' : 'closed'
-  const skillsSelectedClass = state.selectedSkills.length > 0 ? 'selected' : ''
-  const skillsOpenClass = state.isSkillsOpen ? 'open' : 'closed'
-  const softwaresSelectedClass = state.selectedSoftwares.length > 0 ? 'selected' : ''
-  const softwaresOpenClass = state.isSoftwaresOpen ? 'open' : 'closed'
+  const locationSelectedClass = state.locations.selected.length > 0 ? 'selected' : ''
+  const locationOpenClass = state.locations.isOpen ? 'open' : 'closed'
+  const skillsSelectedClass = state.skills.selected.length > 0 ? 'selected' : ''
+  const skillsOpenClass = state.skills.isOpen ? 'open' : 'closed'
+  const softwaresSelectedClass = state.softwares.selected.length > 0 ? 'selected' : ''
+  const softwaresOpenClass = state.softwares.isOpen ? 'open' : 'closed'
 
   return html`
     <div class="filters">
@@ -45,7 +82,7 @@ export function filters(state, emit) {
         </div>
         <div class="drawer ${locationOpenClass}">
           <div class="search">
-            <input type="text" value=${state.locationFilterTerm} onkeyup=${(e) => emit('change-location-filter', e.target.value)} />
+            <input type="text" value=${state.locations.filterTerm} onkeyup=${(e) => emit('change-location-filter', e.target.value)} />
             <img src="media/search.svg" alt="search" />
           </div>
           ${locationFilter(state, emit)}
@@ -58,22 +95,10 @@ export function filters(state, emit) {
         </div>
         <div class="drawer ${skillsOpenClass}">
           <div class="search">
-            <input type="text" />
+            <input type="text" value=${state.skills.filterTerm} onkeyup=${(e) => emit('change-skills-filter', e.target.value)}/>
             <img src="media/search.svg" alt="search" />
           </div>
-          <div class="list">
-            ${state.skills.map((skill) => {
-              if (state.selectedSkills.indexOf(skill.name) != -1) {
-                return html`
-                  <div class="item selected" onclick=${() => emit('deselect-skill', skill.name)}>${skill.name}</div>
-                `
-              } else {
-                return html`
-                  <div class="item" onclick=${() => emit('select-skill', skill.name)}>${skill.name}</div>
-                `
-              }
-            })}
-          </div>
+          ${skillsFilter(state, emit)}
         </div>
       </div>
       <div class="filter ${softwaresSelectedClass}">
@@ -83,22 +108,10 @@ export function filters(state, emit) {
         </div>
         <div class="drawer ${softwaresOpenClass}">
           <div class="search">
-            <input type="text" />
+            <input type="text" value=${state.softwares.filterTerm} onkeyup=${(e) => emit('change-softwares-filter', e.target.value)}/>
             <img src="media/search.svg" alt="search" />
           </div>
-          <div class="list">
-            ${state.softwares.map((software) => {
-              if (state.selectedSoftwares.indexOf(software.name) != -1) {
-                return html`
-                  <div class="item selected" onclick=${() => emit('deselect-software', software.name)}>${software.name}</div>
-                `
-              } else {
-                return html`
-                  <div class="item" onclick=${() => emit('select-software', software.name)}>${software.name}</div>
-                `
-              }
-            })}
-          </div>
+          ${softwaresFilter(state, emit)}
         </div>
       </div>
     </div>
