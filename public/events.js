@@ -25,6 +25,14 @@ export function events(state, emitter) {
   state.skills = getFilterModel()
   state.softwares = getFilterModel()
 
+  state.page = {
+    current: 0,
+    size: 9
+  }
+  state.position = 0
+  state.isMenuHidden = false
+  state.isMenuCollapsed = false
+
   fetch('data/entries.json')
     .then(r => r.json())
     .then((response) => {
@@ -62,7 +70,30 @@ export function events(state, emitter) {
     })
 
   emitter.on('DOMContentLoaded', () => {
-    document.addEventListener('scroll', () => {
+    document.addEventListener('scroll', (e) => {
+      const pos = window.pageYOffset
+      const scrollingUp = pos < state.position
+      const scrollingDown = pos > state.position
+
+      // Hide and show fixed menu depending on scrolling direction
+      if (scrollingUp && pos > 220) {
+        state.isMenuShowing = true
+      } else {
+        state.isMenuShowing = false
+      }
+      if (scrollingDown) {
+        state.isMenuShowing = false
+      }
+
+      // Next page only if it's scrolling down
+      if (scrollingDown) {
+        if (window.pageYOffset + 50 > document.body.clientHeight - window.screen.height) {
+          state.page.current += 1
+          emitter.emit('render')
+        }
+      }
+      state.position = pos
+      // Always close filters
       emitter.emit('close-filters')
     })
   })

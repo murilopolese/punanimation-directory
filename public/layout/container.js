@@ -1,3 +1,44 @@
+function filterEntries(state) {
+  let entries = state.entries
+
+  // filter by location
+  if (state.locations.selected.length > 0) {
+    entries = entries.filter((entry) => {
+      return state.locations.selected.indexOf(entry.location.city) != -1
+    })
+  }
+  if (state.skills.selected.length > 0) {
+    entries = entries.filter((entry) => {
+      const entrySkills = entry.skills.map(s => s.name)
+      return state.skills.selected.reduce(
+        (acc, skill) => {
+          if (entrySkills.indexOf(skill) == -1) {
+            acc = false
+          }
+          return acc
+        },
+        true
+      )
+    })
+  }
+  if (state.softwares.selected.length > 0) {
+    entries = entries.filter((entry) => {
+      const entrySoftwares = entry.softwares.map(s => s.name)
+      return state.softwares.selected.reduce(
+        (acc, software) => {
+          if (entrySoftwares.indexOf(software) == -1) {
+            acc = false
+          }
+          return acc
+        },
+        true
+      )
+    })
+  }
+
+  return entries
+}
+
 function item(entry) {
   return html`
     <div class="item">
@@ -13,8 +54,9 @@ function item(entry) {
 }
 
 export function container(state, emit) {
-  const page = state.entries.slice(0, 9)
-  if (page.length == 0) {
+  let entries = filterEntries(state)
+  entries = entries.slice(0, (state.page.current+1)*state.page.size)
+  if (entries.length == 0) {
     return html`
     <div id="container">
       Loading...
@@ -23,7 +65,7 @@ export function container(state, emit) {
   }
   return html`
     <div id="container">
-      ${page.map(entry => item(entry))}
+      ${entries.map(entry => item(entry))}
     </div>
   `
 }

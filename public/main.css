@@ -33,7 +33,7 @@ a:active {
   text-decoration: none;
 }
 
-#header {
+.header {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -43,7 +43,7 @@ a:active {
   background: var(--light-grey);
 }
 
-#header .menu {
+.header .menu {
   width: 100%;
   max-width: 960px;
   display: flex;
@@ -54,7 +54,7 @@ a:active {
   gap: 10px;
 }
 
-#header .menu .pages {
+.header .menu .pages {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -65,14 +65,14 @@ a:active {
   letter-spacing: 0.84px;
 }
 
-#header .menu .social-media {
+.header .menu .social-media {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
 }
 
-#header .logo {
+.header .logo {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -82,14 +82,14 @@ a:active {
   gap: 11px;
 }
 
-#header .logo .sub-header {
+.header .logo .sub-header {
   font-size: 12px;
   font-weight: normal;
   letter-spacing: 0.84px;
   text-align: center;
 }
 
-#header .filters {
+.header .filters {
   width: 100%;
   padding: 16px 0;
   display: flex;
@@ -98,7 +98,19 @@ a:active {
   align-items: center;
 }
 
-#header .filters .filter {
+.header.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--light-grey);
+}
+.header.fixed .logo,
+.header.fixed .menu {
+  display: none;
+}
+
+.header .filters .filter {
   position: relative;
   width: 100%;
   height: 32px;
@@ -110,22 +122,22 @@ a:active {
   justify-content: space-between;
 }
 
-#header .filters .filter.selected {
+.header .filters .filter.selected {
   border-color: var(--yellow);
 }
 
-#header .filters .filter .label,
-#header .filters .filter .icon {
+.header .filters .filter .label,
+.header .filters .filter .icon {
   cursor: pointer;
 }
-#header .filters .filter .label {
+.header .filters .filter .label {
   width: 100%;
   font-size: 12px;
   font-weight: normal;
   letter-spacing: 0.84px;
 }
 
-#header .filters .filter .drawer {
+.header .filters .filter .drawer {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -138,11 +150,11 @@ a:active {
   z-index: 1;
 }
 
-#header .filters .filter .drawer.closed {
+.header .filters .filter .drawer.closed {
   display: none;
 }
 
-#header .filters .filter .drawer .search {
+.header .filters .filter .drawer .search {
   width: 100%;
   height: 40px;
   display: flex;
@@ -152,7 +164,7 @@ a:active {
   border-bottom: solid 1px var(--black);
 }
 
-#header .filters .filter .drawer .search input {
+.header .filters .filter .drawer .search input {
   width: 100%;
   height: 24px;
   border: none;
@@ -164,20 +176,20 @@ a:active {
   letter-spacing: 0.84px;
 }
 
-#header .filters .filter .drawer .search img {
+.header .filters .filter .drawer .search img {
   width: 20px;
   height: 18px;
 }
 
-#header .filters .filter .drawer .list {
+.header .filters .filter .drawer .list {
   width: 100%;
   padding: 10px 15px 10px 10px;
   height: calc(100% - 40px);
   overflow: scroll;
 }
 
-#header .filters .filter .drawer .list .item-header,
-#header .filters .filter .drawer .list .item {
+.header .filters .filter .drawer .list .item-header,
+.header .filters .filter .drawer .list .item {
   background: var(--white);
   width: 100%;
   padding: 10px;
@@ -189,12 +201,12 @@ a:active {
 }
 
 
-#header .filters .filter .drawer .list .item {
+.header .filters .filter .drawer .list .item {
   font-size: 12px;
   letter-spacing: 0.84px;
 }
 
-#header .filters .filter .drawer .list .item-header {
+.header .filters .filter .drawer .list .item-header {
   background: var(--dark-grey);
   font-size: 12px;
   letter-spacing: 0.84px;
@@ -202,7 +214,7 @@ a:active {
   font-weight: 800;
 }
 
-#header .filters .filter .drawer .list .item.selected {
+.header .filters .filter .drawer .list .item.selected {
   background: var(--yellow);
 }
 
@@ -233,9 +245,6 @@ a:active {
 }
 
 #container .item .name {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   padding: 12px 0;
   gap: 5px;
 }
@@ -307,7 +316,7 @@ a:active {
 
 /* SMALL DEVICES */
 @media (min-width: 600px) {
-  #header {
+  .header {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -317,7 +326,7 @@ a:active {
     background: var(--light-grey);
   }
 
-  #header .menu {
+  .header .menu {
     width: 100%;
     max-width: 960px;
     display: flex;
@@ -328,7 +337,7 @@ a:active {
     gap: 0;
   }
 
-  #header .logo {
+  .header .logo {
     margin-top: -5px;
   }
 
@@ -358,7 +367,7 @@ a:active {
 
 /* DESKTOP */
 @media (min-width: 960px) {
-  #header .filters {
+  .header .filters {
     width: 960px;
     padding: 16px 32px;
     flex-direction: row;

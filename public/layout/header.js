@@ -1,8 +1,8 @@
 import { filters } from './filters.js'
 
 export function header(state, emit) {
-  return html`
-    <div id="header">
+  function hiddenParts() {
+    return html`
       <div class="menu">
         <div class="pages">
           <a href="#about">About</a>
@@ -24,6 +24,23 @@ export function header(state, emit) {
           animation and motion graphics.
         </div>
       </div>
+    `
+  }
+  if (state.isMenuShowing) {
+    return html`
+      <div id="header" class="header">
+        ${hiddenParts(state, emit)}
+        ${filters(state, emit)}
+      </div>
+      <div id="header-fixed" class="header fixed">
+        ${hiddenParts(state, emit)}
+        ${filters(state, emit)}
+      </div>
+    `
+  }
+  return html`
+    <div id="header" class="header">
+      ${hiddenParts(state, emit)}
       ${filters(state, emit)}
     </div>
   `
