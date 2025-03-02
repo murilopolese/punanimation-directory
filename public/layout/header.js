@@ -6,13 +6,13 @@ export function header(state, emit) {
       <div class="menu">
         <div class="pages">
           <a href="#about">About</a>
-          <a href="#" target="_blank">Join</a>
-          <a href="#" target="_blank">Support</a>
+          <a href="https://panimation.typeform.com/to/ZJL9Gx" target="_blank">Join</a>
+          <a href="https://www.patreon.com/panimation" target="_blank">Support</a>
         </div>
         <div class="social-media">
-          <a href="#"><img src="media/facebook.svg" alt="Facebook" /></a>
-          <a href="#"><img src="media/vimeo.svg" alt="Vimeo" /></a>
-          <a href="#"><img src="media/instagram.svg" alt="Instagram" /></a>
+          <a href="https://www.facebook.com/groups/panimation/" target="_blank"><img src="media/facebook.svg" alt="Facebook" /></a>
+          <a href="https://vimeo.com/channels/panimation" target="_blank"><img src="media/vimeo.svg" alt="Vimeo" /></a>
+          <a href="https://www.instagram.com/panimation.tv/" target="_blank"><img src="media/instagram.svg" alt="Instagram" /></a>
         </div>
       </div>
       <div class="logo">
@@ -23,6 +23,13 @@ export function header(state, emit) {
           A directory of women, trans and non-binary friends working with
           animation and motion graphics.
         </div>
+      </div>
+    `
+  }
+  if (state.route == 'about') {
+    return html`
+      <div id="header" class="header">
+        ${hiddenParts(state, emit)}
       </div>
     `
   }

@@ -314,6 +314,50 @@ a:active {
   letter-spacing: 0.84px;
 }
 
+#container.about {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding-top: 16px;
+}
+
+#container.about > * {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  line-height: normal;
+}
+
+#container.about h2 {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 2.24px;
+  text-align: center;
+}
+#container.about p {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.84px
+}
+#container.about a {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.84px;
+}
+#container.about a.link {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.98px;
+}
+#container.about p.title-image {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  padding: 8px 0;
+}
+
 /* SMALL DEVICES */
 @media (min-width: 600px) {
   .header {
@@ -387,5 +431,16 @@ a:active {
   #container .item img {
     max-width: 100%;
     height: 198px;
+  }
+
+  #container.about {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  #container.about > * {
+    width: calc( 100% / 2 );
+    padding: 16px;
   }
 }
