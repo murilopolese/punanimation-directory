@@ -39,15 +39,24 @@ function skillsFilter(state, emit) {
       `
     }
   }
+  const regularSkills = state.skills.filtered.filter((skillName) => {
+    const skillObj = state.requests.skills.find(a => a.name == skillName)
+    return skillObj && !skillObj.extra
+  })
+  const extraSkills = state.skills.filtered.filter((skillName) => {
+    const skillObj = state.requests.skills.find(a => a.name == skillName)
+    return skillObj && skillObj.extra
+  })
   return html`
     <div class="list">
-      ${state.skills.filtered.sort().map(item)}
+      ${regularSkills.sort().map(item)}
+      ${extraSkills.length > 0 ? html`<div class="extra-header">Extras</div>` : null}
+      ${extraSkills.sort().map(item)}
     </div>
   `
 }
 function softwaresFilter(state, emit) {
   function item(value) {
-    // const value = a.name
     if (state.softwares.selected.indexOf(value) != -1) {
       return html`
         <div class="item selected" onclick=${() => emit('deselect-software', value)}>${value}</div>

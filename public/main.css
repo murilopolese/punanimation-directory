@@ -189,6 +189,7 @@ a:active {
 }
 
 .header .filters .filter .drawer .list .item-header,
+.header .filters .filter .drawer .list .extra-header,
 .header .filters .filter .drawer .list .item {
   background: var(--white);
   width: 100%;
@@ -198,6 +199,13 @@ a:active {
   align-items: center;
   cursor: pointer;
   margin-bottom: 5px;
+}
+.header .filters .filter .drawer .list .extra-header {
+  background: none;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.84px;
+  text-transform: uppercase;
 }
 
 

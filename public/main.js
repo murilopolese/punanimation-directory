@@ -7,12 +7,13 @@ import { about } from './layout/about.js'
 
 import { events } from './events.js'
 
-const app = Choo({ hash: true })
+const app = Choo({
+  hash: true,
+  href: false
+})
 app.use(events)
 
 function mainView(state, emit) {
-  state.selectedEntry = null
-  state.isModalOpen = false
   const noScrollClass = state.params.id ? 'no-scroll' : ''
   return html`
     <body class="${noScrollClass}">
@@ -31,7 +32,8 @@ function aboutView(state, emit) {
   `
 }
 
-app.route('/', mainView)
+
+app.route('/about', aboutView)
 app.route('/:id', (state, emit) => {
   const id = state.params.id
   const selectedEntry = state.entries.find(entry => entry._id == id)
@@ -41,5 +43,9 @@ app.route('/:id', (state, emit) => {
   }
   return mainView(state, emit)
 })
-app.route('/about', aboutView)
+app.route('/', (state, emit) => {
+  state.selectedEntry = null
+  state.isModalOpen = false
+  return mainView(state, emit)
+})
 app.mount('body')
