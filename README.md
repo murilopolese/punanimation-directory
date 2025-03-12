@@ -10,7 +10,6 @@ Environment variables:
 ```
 COOKIE_SECRET=
 MONGO_URL=
-CLOUDINARY_URL=
 ```
 
 # Run Frontend code
