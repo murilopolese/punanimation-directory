@@ -11,7 +11,6 @@ export function header(state, emit) {
         </div>
         <div class="social-media">
           <a href="https://www.facebook.com/groups/panimation/" target="_blank"><img src="media/facebook.svg" alt="Facebook" /></a>
-          <a href="https://vimeo.com/channels/panimation" target="_blank"><img src="media/vimeo.svg" alt="Vimeo" /></a>
           <a href="https://www.instagram.com/panimation.tv/" target="_blank"><img src="media/instagram.svg" alt="Instagram" /></a>
         </div>
       </div>

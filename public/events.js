@@ -134,6 +134,8 @@ export function events(state, emitter) {
       // Always close filters
       emitter.emit('close-filters')
     })
+
+
   })
 
   emitter.on('open-modal', () => {

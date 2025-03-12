@@ -337,6 +337,10 @@ a:active {
   line-height: normal;
 }
 
+#container.about > .special {
+  gap: 0;
+}
+
 #container.about h2 {
   font-size: 32px;
   font-weight: 900;
@@ -357,6 +361,8 @@ a:active {
   font-size: 14px;
   font-weight: 900;
   letter-spacing: 0.98px;
+  display: inline-block;
+  margin-bottom: 16px;
 }
 #container.about p.title-image {
   display: flex;
@@ -365,6 +371,11 @@ a:active {
   justify-content: center;
   padding: 8px 0;
 }
+
+#container.about .special p.title-image {
+  margin-bottom: 12px;
+}
+
 
 /* SMALL DEVICES */
 @media (min-width: 600px) {
