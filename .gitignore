@@ -36,3 +36,5 @@ scripts/images/uploaded/*
 
 public/.cache
 db
+
+compose.yaml
