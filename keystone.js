@@ -9,8 +9,8 @@ keystone.init({
 	'name': 'panimation',
 	'brand': 'panimation',
 
-	'static': 'public/build',
-	'favicon': 'public/build/favicon0.ico',
+	'static': 'public',
+	'favicon': 'public/media/favicon0.ico',
 
 	'auto update': true,
 	'session': true,
