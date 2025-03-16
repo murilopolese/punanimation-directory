@@ -35,3 +35,4 @@ scripts/images/original/*
 scripts/images/uploaded/*
 
 public/.cache
+db

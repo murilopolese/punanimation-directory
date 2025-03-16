@@ -10,7 +10,6 @@ Environment variables:
 ```
 COOKIE_SECRET=
 MONGO_URL=
-CLOUDINARY_URL=
 ```
 
 # Run Frontend code
@@ -20,14 +19,14 @@ CLOUDINARY_URL=
 npm start
 ```
 
-# Updating www.panimation.tv
+# With Docker compose
 
 ```
-# /public
-npm run deploy
+docker compose up -d
 ```
 
+Tear down:
+
 ```
-# /public
-./update.sh
+docker compose down --rmi all
 ```

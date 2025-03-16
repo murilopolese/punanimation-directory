@@ -1,0 +1,27 @@
+services:
+  mongo:
+    image: mongo:5
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    ports:
+      - 27017:27017
+    networks:
+      - panimation-network
+    volumes:
+      - ./db:/data/db
+  app:
+    build: .
+    depends_on:
+      - mongo
+    restart: on-failure
+    ports:
+      - 3000:3000
+    networks:
+      - panimation-network
+    environment:
+      - COOKIE_SECRET=9q4lfzu4hm4c8a948mo4ac8m4f8w4mcw84umcwp48umcfpwa48umcwap84
+      - MONGO_URL=mongodb://root:root@mongo:27017?authSource=admin
+networks:
+  panimation-network:
+    driver: bridge
