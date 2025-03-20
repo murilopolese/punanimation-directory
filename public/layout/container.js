@@ -4,7 +4,8 @@ function filterEntries(state) {
   // filter by location
   if (state.locations.selected.length > 0) {
     entries = entries.filter((entry) => {
-      return state.locations.selected.indexOf(entry.location.city) != -1
+      return entry.location
+          && state.locations.selected.indexOf(entry.location.city) != -1
     })
   }
   if (state.skills.selected.length > 0) {
