@@ -1,5 +1,3 @@
-console.log('loaded')
-
 import { header } from './layout/header.js'
 import { container } from './layout/container.js'
 import { modal } from './layout/modal.js'

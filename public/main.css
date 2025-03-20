@@ -8,6 +8,13 @@
   --yellow: #fcc438;
 }
 
+html {
+  display: flex;
+  align-items: stretch;
+  min-width: 100%;
+  min-height: 100%;
+}
+
 body {
   font-family: "Open Sans", serif;
   width: 100%;
@@ -20,6 +27,7 @@ body.no-scroll {
   height: 100%;
   overflow: hidden;
 }
+
 
 img {
   max-width: 100%;
@@ -231,6 +239,7 @@ a:active {
   flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
+  height: 100%;
   padding: 0 16px;
 }
 
@@ -374,6 +383,45 @@ a:active {
 
 #container.about .special p.title-image {
   margin-bottom: 12px;
+}
+
+#loading {
+  display: flex;
+  margin: auto;
+}
+#loading svg {
+  transform-origin: center;
+  animation: circularRotateFrames 1.4s linear infinite;
+}
+#loading svg circle {
+  animation: circularDashFrames 1.4s ease-in-out infinite;
+}
+
+@keyframes circularRotateFrames {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes circularDashFrames {
+  0% {
+    stroke-dasharray: 1px, 200px;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 100px, 200px;
+    stroke-dashoffset: -15px;
+  }
+
+  100% {
+    stroke-dasharray: 1px, 200px;
+    stroke-dashoffset: -126px;
+  }
 }
 
 

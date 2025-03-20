@@ -57,10 +57,13 @@ function item(entry) {
 export function container(state, emit) {
   let entries = filterEntries(state)
   entries = entries.slice(0, (state.page.current+1)*state.page.size)
+  const svg = raw`<svg width="44" height="44"><circle stroke="#fcc438" cx="22" cy="22" r="20" fill="none" stroke-width="3.6"></circle></svg>`
   if (entries.length == 0) {
     return html`
     <div id="container">
-      Loading...
+      <div id="loading">
+        ${svg}
+      </div>
     </div>
     `
   }

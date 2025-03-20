@@ -31,7 +31,6 @@ function shuffle(array) {
 }
 
 export function events(state, emitter) {
-  console.log('store')
   state.requests = {
     entries: null,
     locations: null,
