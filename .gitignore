@@ -36,5 +36,6 @@ scripts/images/uploaded/*
 
 public/.cache
 db
+dump
 
 compose.yaml
