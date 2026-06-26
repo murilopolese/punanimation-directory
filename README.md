@@ -30,3 +30,10 @@ Tear down:
 ```
 docker compose down --rmi all
 ```
+
+# Build and push
+
+```
+docker build -t murilopolese/panimation:latest
+docker push murilopolese/panimation:latest
+```
