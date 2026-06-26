@@ -10,18 +10,19 @@ services:
       - panimation-network
     volumes:
       - ./db:/data/db
+      - ./dump:/dump
   app:
     build: .
     depends_on:
       - mongo
-    restart: on-failure
+    restart: unless-stopped
     ports:
       - 3000:3000
     networks:
       - panimation-network
     environment:
-      - COOKIE_SECRET=9q4lfzu4hm4c8a948mo4ac8m4f8w4mcw84umcwp48umcfpwa48umcwap84
-      - MONGO_URL=mongodb://root:root@mongo:27017?authSource=admin
+      - COOKIE_SECRET=xxx123
+      - MONGO_URL=mongodb://root:root@mongo:27017
 networks:
   panimation-network:
     driver: bridge
