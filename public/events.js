@@ -58,7 +58,14 @@ export function events(state, emitter) {
     .then(r => r.json())
     .then((response) => {
       state.requests.entries = response
-      state.entries = response.entries
+      state.entries = response.entries.filter((entry) => {
+        // Filter out incomplete entries
+        return entry.name 
+            && entry.coverImage
+            && entry.location
+            && entry.skills
+            && entry.softwares
+      })
       shuffle(state.entries)
       state.entries = state.entries.sort((a, b) => {
         const isADefault = a.coverImage == 'https://i.imgur.com/Hc0Ok0V.jpg'
