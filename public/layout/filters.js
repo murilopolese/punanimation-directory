@@ -1,13 +1,18 @@
+import { countries as countryMap } from '../data/countries.js'
+
 function locationFilter(state, emit) {
-  const countries = Object.keys(state.locations.filtered).sort()
-  function itemHeader(country) {
-    return html`<div class="item-header">${country}</div>`
-  }
+  const sortedCountryNames = Object.keys(state.locations.filtered)
+    .map(c => countryMap[c])
+    .filter(c => !!c)
+    .sort()
+  const sortedCountryCodes = sortedCountryNames.map(c => {
+    return Object.keys(countryMap).find(key => countryMap[key] === c)
+  })
   function item(country) {
     const cities = state.locations.filtered[country]
     if (cities.length == 0) return
     return html `
-      <div class="item-header">${country}</div>
+      <div class="item-header">${countryMap[country]}</div>
       ${cities.map((city) => {
         if (state.locations.selected.indexOf(city) != -1) {
           return html`
@@ -23,7 +28,7 @@ function locationFilter(state, emit) {
   }
   return html`
     <div class="list">
-      ${countries.map(item)}
+      ${sortedCountryCodes.map(item)}
     </div>
   `
 }

@@ -1,5 +1,3 @@
-import { countries } from './data/countries.js'
-
 function normalize(str) {
 	return str.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase()
 }
@@ -86,7 +84,7 @@ export function events(state, emitter) {
       state.requests.locations = response.locations
       // Create a dictionary with the full country name, not two letter code
       state.locations.data = response.locations.reduce((acc, location) => {
-        const country = countries[location.country]
+        const country = location.country
         if (acc[country]) {
           acc[country].push(location.city)
         } else {
@@ -100,7 +98,6 @@ export function events(state, emitter) {
     .then(r => r.json())
     .then((response) => {
       state.requests.skills = response.skills
-      // console.log(response.skills)
       state.skills.data = response.skills.map((a) => a.name)
       emitter.emit('change-skills-filter', '')
     })
@@ -108,7 +105,6 @@ export function events(state, emitter) {
     .then(r => r.json())
     .then((response) => {
       state.requests.softwares = response.softwares
-      // console.log(response.softwares)
       state.softwares.data = response.softwares.map((a) => a.name)
       emitter.emit('change-softwares-filter', '')
     })
