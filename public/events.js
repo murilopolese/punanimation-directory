@@ -149,14 +149,14 @@ export function events(state, emitter) {
     emitter.emit('render')
   })
 
-  emitter.on('select-location', (city) => {
-    if (state.locations.selected.indexOf(city) == -1) {
-      state.locations.selected.push(city)
+  emitter.on('select-location', (uniqueLocation) => {
+    if (state.locations.selected.indexOf(uniqueLocation) == -1) {
+      state.locations.selected.push(uniqueLocation)
     }
     emitter.emit('render')
   })
-  emitter.on('deselect-location', (city) => {
-    const index = state.locations.selected.indexOf(city)
+  emitter.on('deselect-location', (uniqueLocation) => {
+    const index = state.locations.selected.indexOf(uniqueLocation)
     if (index != -1) {
       state.locations.selected.splice(index, 1)
     }

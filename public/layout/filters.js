@@ -14,13 +14,14 @@ function locationFilter(state, emit) {
     return html `
       <div class="item-header">${countryMap[country]}</div>
       ${cities.map((city) => {
-        if (state.locations.selected.indexOf(city) != -1) {
+        const uniqueLocation = Object.values({country, city}).toString()
+        if (state.locations.selected.indexOf(uniqueLocation) != -1) {
           return html`
-            <div class="item selected" onclick=${() => emit('deselect-location', city)}>${city}</div>
+            <div class="item selected" onclick=${() => emit('deselect-location', uniqueLocation)}>${city}</div>
           `
         } else {
           return html`
-            <div class="item" onclick=${() => emit('select-location', city)}>${city}</div>
+            <div class="item" onclick=${() => emit('select-location', uniqueLocation)}>${city}</div>
           `
         }
       })}

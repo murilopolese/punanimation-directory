@@ -4,8 +4,10 @@ function filterEntries(state) {
   // filter by location
   if (state.locations.selected.length > 0) {
     entries = entries.filter((entry) => {
-      return entry.location
-          && state.locations.selected.indexOf(entry.location.city) != -1
+      if (!entry.location) return false
+      const { country, city } = entry.location
+      const uniqueLocation = Object.values({ country, city }).toString()
+      return state.locations.selected.indexOf(uniqueLocation) != -1
     })
   }
   if (state.skills.selected.length > 0) {
