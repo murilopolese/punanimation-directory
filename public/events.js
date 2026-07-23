@@ -1,3 +1,6 @@
+// const apiUrl = 'data'
+const apiUrl = '/api'
+
 function normalize(str) {
 	return str.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase()
 }
@@ -52,7 +55,7 @@ export function events(state, emitter) {
   state.isMenuHidden = false
   state.isMenuCollapsed = false
 
-  fetch('data/entries.json')
+  fetch(`${apiUrl}/entries`)
     .then(r => r.json())
     .then((response) => {
       state.requests.entries = response
@@ -78,7 +81,7 @@ export function events(state, emitter) {
       })
       emitter.emit('render')
     })
-  fetch('data/locations.json')
+  fetch(`${apiUrl}/locations`)
     .then(r => r.json())
     .then((response) => {
       state.requests.locations = response.locations
@@ -94,14 +97,14 @@ export function events(state, emitter) {
       }, {})
       emitter.emit('change-location-filter', '')
     })
-  fetch('data/skills.json')
+  fetch(`${apiUrl}/skills`)
     .then(r => r.json())
     .then((response) => {
       state.requests.skills = response.skills
       state.skills.data = response.skills.map((a) => a.name)
       emitter.emit('change-skills-filter', '')
     })
-  fetch('data/softwares.json')
+  fetch(`${apiUrl}/softwares`)
     .then(r => r.json())
     .then((response) => {
       state.requests.softwares = response.softwares

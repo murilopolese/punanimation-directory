@@ -2,7 +2,7 @@ console.log("TODO: Download content")
 
 const fs = require('fs')
 // const apiUrl = 'http://localhost:3000/api'
-const apiUrl = 'http://panimation.box.bananabanana.me/api'
+const apiUrl = 'https://panimation.box.bananabanana.me/api/'
 
 console.log("downloading entries")
 fetch(`${apiUrl}/entries`)
